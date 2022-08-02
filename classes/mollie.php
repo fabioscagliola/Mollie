@@ -22,6 +22,7 @@
  * @package   enrol_coursepayment
  * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
+ * @author    Jeremy van Lier <jeremy@sebsoft.nl>
  */
 
 use Mollie\Api\Exceptions\ApiException;
@@ -620,7 +621,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             $string .= '<tr data-method="' . $method->id . '" class="' . $method->id . (($i == 0) ? ' selected' : '') . '">';
             $string .= '<td><b>' . htmlspecialchars($method->description) . '</b></td>';
-            $string .= '<td><img src="' . htmlspecialchars($method->image->normal) . '"></td>';
+            $string .= '<td><img src="' . htmlspecialchars($method->image->size1x) . '"></td>';
             $string .= '</tr>';
 
             if ($method->id == PaymentMethod::IDEAL) {
@@ -631,9 +632,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                                         <option value="">' . get_string('gateway_mollie_issuers', 'enrol_coursepayment') . '</option>';
 
                 foreach ($method->issuers as $issuer) {
-                    if ($issuer->method == PaymentMethod::IDEAL) {
-                        $string .= '<option value=' . htmlspecialchars($issuer->id) . '>' . htmlspecialchars($issuer->name) . '</option>';
-                    }
+                    $string .= '<option value=' . htmlspecialchars($issuer->id) . '>' . htmlspecialchars($issuer->name) . '</option>';
                 }
                 $string .= '</select></td><td>&nbsp;</td></tr>';
             }
