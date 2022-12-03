@@ -14,6 +14,8 @@ Enrol CoursePayment
 ![Moodle39](https://img.shields.io/badge/moodle-3.9-brightgreen.svg)
 ![Moodle310](https://img.shields.io/badge/moodle-3.10-brightgreen.svg)
 ![Moodle311](https://img.shields.io/badge/moodle-3.11-brightgreen.svg)
+![Moodle40](https://img.shields.io/badge/moodle-4.0-brightgreen.svg)
+![Moodle41](https://img.shields.io/badge/moodle-4.1-brightgreen.svg)
 ![PHP7.2](https://img.shields.io/badge/PHP-7.2-brightgreen.svg)
 ![PHP7.4](https://img.shields.io/badge/PHP-7.4-brightgreen.svg)
 
@@ -37,17 +39,17 @@ Has support for:
 Installation
 ====================
 
-1. copy this plugin to the `enrol` folder called `coursepayment`
-2. login as administrator
-3. go to Site Administrator > Notification
-4. install the plugin
-5. register on the gateway page you interested at
-6. add global settings and your gateway settings
+1. Copy this plugin to the `enrol` folder called `coursepayment`.
+2. Login as administrator.
+3. Go to Site Administrator > Notification.
+4. Install the plugin.
+5. Register on the gateway page you interested at.
+6. Add global settings and your gateway settings.
 
 Changelog
 ====================
 
-See Git for the complete history, major changes will be listed below
+See Git for the complete history, major changes will be listed below.
 - 2022120100 - Moodle 4.1 / Moodle Workplace 4.0 and PHP 7.4 support implemented.
 - 2020103000 - Moodle 3.11 support implemented.
 - 2020103000 - Moodle 3.10 support implemented.
