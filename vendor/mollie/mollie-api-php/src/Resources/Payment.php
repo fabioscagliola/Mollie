@@ -39,7 +39,7 @@ class Payment extends BaseResource
     /**
      * The amount that has been settled containing the value and currency
      *
-     * @var \stdClass
+     * @var \stdClass|null
      */
     public $settlementAmount;
 
@@ -232,7 +232,7 @@ class Payment extends BaseResource
      * Details of a successfully paid payment are set here. For example, the iDEAL
      * payment method will set $details->consumerName and $details->consumerAccount.
      *
-     * @var \stdClass
+     * @var \stdClass|null
      */
     public $details;
 
@@ -275,6 +275,16 @@ class Payment extends BaseResource
      * @var \stdClass|null
      */
     public $applicationFee;
+
+    /**
+     * An optional routing configuration which enables you to route a successful payment,
+     * or part of the payment, to one or more connected accounts. Additionally, you can
+     * schedule (parts of) the payment to become available on the connected account on a
+     * future date.
+     *
+     * @var array|null
+     */
+    public $routing;
 
     /**
      * The date and time the payment became authorized, in ISO 8601 format. This
@@ -441,6 +451,20 @@ class Payment extends BaseResource
     }
 
     /**
+     * Get the mobile checkout URL where the customer can complete the payment.
+     *
+     * @return string|null
+     */
+    public function getMobileAppCheckoutUrl()
+    {
+        if (empty($this->_links->mobileAppCheckout)) {
+            return null;
+        }
+
+        return $this->_links->mobileAppCheckout->href;
+    }
+
+    /**
      * @return bool
      */
     public function canBeRefunded()
@@ -487,6 +511,31 @@ class Payment extends BaseResource
     }
 
     /**
+     * Get the total amount that was charged back for this payment. Only available when the
+     * total charged back amount is not zero.
+     *
+     * @return float
+     */
+    public function getAmountChargedBack()
+    {
+        if ($this->amountChargedBack) {
+            return (float)$this->amountChargedBack->value;
+        }
+
+        return 0.0;
+    }
+
+    /**
+     * Does the payment have split payments
+     *
+     * @return bool
+     */
+    public function hasSplitPayments()
+    {
+        return ! empty($this->routing);
+    }
+
+    /**
      * Retrieves all refunds associated with this payment
      *
      * @return RefundCollection
@@ -516,6 +565,7 @@ class Payment extends BaseResource
      * @param array $parameters
      *
      * @return Refund
+     * @throws ApiException
      */
     public function getRefund($refundId, array $parameters = [])
     {
@@ -526,6 +576,7 @@ class Payment extends BaseResource
      * @param array $parameters
      *
      * @return Refund
+     * @throws ApiException
      */
     public function listRefunds(array $parameters = [])
     {
@@ -562,6 +613,7 @@ class Payment extends BaseResource
      * @param array $parameters
      *
      * @return Capture
+     * @throws ApiException
      */
     public function getCapture($captureId, array $parameters = [])
     {
@@ -604,6 +656,7 @@ class Payment extends BaseResource
      * @param array $parameters
      *
      * @return Chargeback
+     * @throws ApiException
      */
     public function getChargeback($chargebackId, array $parameters = [])
     {
@@ -619,50 +672,31 @@ class Payment extends BaseResource
      *
      * @param array $data
      *
-     * @return BaseResource
+     * @return \Mollie\Api\Resources\Refund
      * @throws ApiException
      */
     public function refund($data)
     {
-        $resource = "payments/" . urlencode($this->id) . "/refunds";
-
-        $data = $this->withPresetOptions($data);
-        $body = null;
-        if (count($data) > 0) {
-            $body = json_encode($data);
-        }
-
-        $result = $this->client->performHttpCall(
-            MollieApiClient::HTTP_POST,
-            $resource,
-            $body
-        );
-
-        return ResourceFactory::createFromApiResult(
-            $result,
-            new Refund($this->client)
-        );
+        return $this->client->paymentRefunds->createFor($this, $data);
     }
 
+    /**
+     * @return \Mollie\Api\Resources\Payment
+     * @throws \Mollie\Api\Exceptions\ApiException
+     */
     public function update()
     {
-        if (! isset($this->_links->self->href)) {
-            return $this;
-        }
-
-        $body = json_encode([
+        $body = [
             "description" => $this->description,
             "redirectUrl" => $this->redirectUrl,
             "webhookUrl" => $this->webhookUrl,
             "metadata" => $this->metadata,
             "restrictPaymentMethodsToCountry" => $this->restrictPaymentMethodsToCountry,
-        ]);
+            "locale" => $this->locale,
+            "dueDate" => $this->dueDate,
+        ];
 
-        $result = $this->client->performHttpCallToFullUrl(
-            MollieApiClient::HTTP_PATCH,
-            $this->_links->self->href,
-            $body
-        );
+        $result = $this->client->payments->update($this->id, $body);
 
         return ResourceFactory::createFromApiResult($result, new Payment($this->client));
     }

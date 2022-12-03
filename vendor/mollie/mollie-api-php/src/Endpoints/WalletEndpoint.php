@@ -9,19 +9,29 @@ class WalletEndpoint extends EndpointAbstract
     /**
      * Get the object that is used by this API endpoint. Every API endpoint uses one type of object.
      *
-     * @return BaseResource
+     * @return void|BaseResource
      */
     protected function getResourceObject()
     {
         // Not used
     }
 
-    public function requestApplePayPaymentSession($domain, $validationUrl)
+    /**
+     * Obtain a new ApplePay payment session.
+     *
+     * @param string $domain
+     * @param string $validationUrl
+     * @param array $parameters
+     *
+     * @return false|string
+     * @throws \Mollie\Api\Exceptions\ApiException
+     */
+    public function requestApplePayPaymentSession($domain, $validationUrl, $parameters = [])
     {
-        $body = $this->parseRequestBody([
+        $body = $this->parseRequestBody(array_merge([
             'domain' => $domain,
             'validationUrl' => $validationUrl,
-        ]);
+        ], $parameters));
 
         $response = $this->client->performHttpCall(
             self::REST_CREATE,

@@ -2,6 +2,7 @@
 
 namespace Mollie\Api\Endpoints;
 
+use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Resources\Order;
 use Mollie\Api\Resources\Shipment;
 use Mollie\Api\Resources\ShipmentCollection;
@@ -13,7 +14,7 @@ class ShipmentEndpoint extends CollectionEndpointAbstract
     /**
      * @var string
      */
-    const RESOURCE_ID_PREFIX = 'shp_';
+    public const RESOURCE_ID_PREFIX = 'shp_';
 
     /**
      * Get the object that is used by this API endpoint. Every API endpoint uses one type of object.
@@ -95,7 +96,7 @@ class ShipmentEndpoint extends CollectionEndpointAbstract
      * @param string $shipmentId
      * @param array $parameters
      *
-     * @return \Mollie\Api\Resources\BaseResource|\Mollie\Api\Resources\Shipment
+     * @return \Mollie\Api\Resources\Shipment
      * @throws \Mollie\Api\Exceptions\ApiException
      */
     public function getForId($orderId, $shipmentId, array $parameters = [])
@@ -103,6 +104,29 @@ class ShipmentEndpoint extends CollectionEndpointAbstract
         $this->parentId = $orderId;
 
         return parent::rest_read($shipmentId, $parameters);
+    }
+
+    /**
+     * Update a specific Order Shipment resource.
+     *
+     * Will throw an ApiException if the shipment id is invalid or the resource cannot be found.
+     *
+     * @param string $shipmentId
+     * @param string $orderId
+     *
+     * @param array $data
+     * @return Shipment
+     * @throws ApiException
+     */
+    public function update($orderId, $shipmentId, array $data = [])
+    {
+        if (empty($shipmentId) || strpos($shipmentId, self::RESOURCE_ID_PREFIX) !== 0) {
+            throw new ApiException("Invalid subscription ID: '{$shipmentId}'. An subscription ID should start with '".self::RESOURCE_ID_PREFIX."'.");
+        }
+
+        $this->parentId = $orderId;
+
+        return parent::rest_update($shipmentId, $data);
     }
 
     /**
@@ -125,7 +149,7 @@ class ShipmentEndpoint extends CollectionEndpointAbstract
      * @param string $orderId
      * @param array $parameters
      *
-     * @return \Mollie\Api\Resources\BaseCollection|\Mollie\Api\Resources\ShipmentCollection
+     * @return \Mollie\Api\Resources\ShipmentCollection
      * @throws \Mollie\Api\Exceptions\ApiException
      */
     public function listForId($orderId, array $parameters = [])
