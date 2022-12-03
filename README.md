@@ -15,6 +15,7 @@ Enrol CoursePayment
 ![Moodle310](https://img.shields.io/badge/moodle-3.10-brightgreen.svg)
 ![Moodle311](https://img.shields.io/badge/moodle-3.11-brightgreen.svg)
 ![PHP7.2](https://img.shields.io/badge/PHP-7.2-brightgreen.svg)
+![PHP7.4](https://img.shields.io/badge/PHP-7.4-brightgreen.svg)
 
 With this plugin you can sell courses to your moodle users. There is also a [availability plugin](https://deploy01.avetica.net/technisch-team/moodlefreak/availability_coursepayment/) available.
 
@@ -47,7 +48,7 @@ Changelog
 ====================
 
 See Git for the complete history, major changes will be listed below
-
+- 2022120100 - Moodle 4.1 / Moodle Workplace 4.0 and PHP 7.4 support implemented.
 - 2020103000 - Moodle 3.11 support implemented.
 - 2020103000 - Moodle 3.10 support implemented.
 - 2020012800 - Moodle 3.9 support implemented, only supports PHP 7.2 and higher.
