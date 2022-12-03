@@ -1,6 +1,33 @@
 Ldesign Media - Enrol CoursePayment
 ====================
 
+With this plugin you can sell courses to your moodle users. There is also a [availability plugin](https://deploy01.avetica.net/technisch-team/moodlefreak/availability_coursepayment/) available.
+
+### Description
+
+This plugin allows you to sell courses with multiple gateways.
+
+Has support for:
+* Mollie gateway.
+* IPN/Callbacks.
+* Query openen transactions every hour with cron.
+* Easy to build own extend with another gateway.
+* Instance based settings like currency, enrol period.
+* Global notification settings.
+* A global sandbox and debug switches.
+* After successful transaction user will be enrolled.
+* Multiple Mollie accounts support, account selection based on matching profile field value.
+
+### Installation
+
+1. Copy this plugin to the `enrol` folder called `coursepayment`.
+2. Login as administrator.
+3. Go to Site Administrator > Notification.
+4. Install the plugin.
+5. Register on the gateway page you interested at.
+6. Add global settings and your gateway settings.
+
+##### Requirements:
 
 * Requires at least: Moodle 3.5
 * Supports PHP: 7.2, 7.4
@@ -17,37 +44,10 @@ Ldesign Media - Enrol CoursePayment
 ![PHP7.2](https://img.shields.io/badge/PHP-7.2-brightgreen.svg)
 ![PHP7.4](https://img.shields.io/badge/PHP-7.4-brightgreen.svg)
 
-With this plugin you can sell courses to your moodle users. There is also a [availability plugin](https://deploy01.avetica.net/technisch-team/moodlefreak/availability_coursepayment/) available.
-
-Description
-====================
-This plugin allows you to sell courses with multiple gateways.
-
-Has support for:
-* Mollie gateway.
-* IPN/Callbacks.
-* Query openen transactions every hour with cron.
-* Easy to build own extend with another gateway.
-* Instance based settings like currency, enrol period.
-* Global notification settings.
-* A global sandbox and debug switches.
-* After successful transaction user will be enrolled.
-* Multiple Mollie accounts support, account selection based on matching profile field value.
-
-Installation
-====================
-
-1. Copy this plugin to the `enrol` folder called `coursepayment`.
-2. Login as administrator.
-3. Go to Site Administrator > Notification.
-4. Install the plugin.
-5. Register on the gateway page you interested at.
-6. Add global settings and your gateway settings.
-
-Changelog
-====================
+### Changelog
 
 See Git for the complete history, major changes will be listed below.
+
 - 2022120100 - Moodle 4.1 / Moodle Workplace 4.0 and PHP 7.4 support implemented.
 - 2020103000 - Moodle 3.11 support implemented.
 - 2020103000 - Moodle 3.10 support implemented.
@@ -69,18 +69,15 @@ See Git for the complete history, major changes will be listed below.
 - 2015061202 - Intergration of customable vat percentage per instance and global.
 - 2015061201 - We added invoice mail support.
 
-Security Vulnerabilities
-====================
+### Security Vulnerabilities
+
 
 If you discover any security vulnerabilities, please send an e-mail via [luuk@ldesignmedia.nl](luuk@ldesignmedia.nl)
 
-License
-====================
+### License
 
 This project is licensed under the **GNU General Public License v3.0**. - http://www.gnu.org/licenses or see
 the [LICENSE](LICENSE) file.
-
----
 
 ### Copyright
 
