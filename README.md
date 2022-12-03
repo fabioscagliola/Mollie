@@ -5,7 +5,7 @@ Enrol CoursePayment
 * Author: Luuk Verhoeven, [Mfreak.nl](http://Mfreak.nl)
 * Requires at least: Moodle 3.5
 * License: [Avetica](http://avetica.nl)
-* Supports PHP: 7.2
+* Supports PHP: 7.2, 7.4
 
 ![Moodle35](https://img.shields.io/badge/moodle-3.5-brightgreen.svg)
 ![Moodle36](https://img.shields.io/badge/moodle-3.6-brightgreen.svg)
