@@ -1,10 +1,8 @@
-Enrol CoursePayment
+Ldesign Media - Enrol CoursePayment
 ====================
-![MFreak.nl](http://MFreak.nl/logo_small.png)
 
-* Author: Luuk Verhoeven, [Mfreak.nl](http://Mfreak.nl)
+
 * Requires at least: Moodle 3.5
-* License: [Avetica](http://avetica.nl)
 * Supports PHP: 7.2, 7.4
 
 ![Moodle35](https://img.shields.io/badge/moodle-3.5-brightgreen.svg)
@@ -70,3 +68,29 @@ See Git for the complete history, major changes will be listed below.
 - 2016111200 - Support for availability_coursepayment, purchase a single activity.
 - 2015061202 - Intergration of customable vat percentage per instance and global.
 - 2015061201 - We added invoice mail support.
+
+Security Vulnerabilities
+====================
+
+If you discover any security vulnerabilities, please send an e-mail via [luuk@ldesignmedia.nl](luuk@ldesignmedia.nl)
+
+License
+====================
+
+This project is licensed under the **GNU General Public License v3.0**. - http://www.gnu.org/licenses or see
+the [LICENSE](LICENSE) file.
+
+---
+
+### Copyright
+
+<img src="https://avetica.nl/logo.svg" alt="avetica logo" width="250px">
+
+Copyright © 2022 Avetica :: [Avetica.nl](https://avetica.nl/)
+
+##### Author
+
+* Luuk Verhoeven :: [Ldesign Media](https://ldesignmedia.nl/) - [luuk@ldesignmedia.nl](luuk@ldesignmedia.nl)
+* Hamza Tamyachte :: [Ldesign Media](https://ldesignmedia.nl/) -  [hamza.tamyachte@ldesignmedia.nl](hamza.tamyachte@ldesignmedia.nl)
+
+<img src="https://ldesignmedia.nl/themes/ldesignmedia/assets/images/logo/logo.svg" alt="ldesignmedia" height="70px">
