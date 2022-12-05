@@ -26,6 +26,7 @@ Has support for:
 4. Install the plugin.
 5. Register on the gateway page you interested at.
 6. Add global settings and your gateway settings.
+7. Enable enrollment plugin by going to `/admin/settings.php?section=manageenrols`. 
 
 ##### Requirements:
 
