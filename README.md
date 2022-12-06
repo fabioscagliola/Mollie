@@ -48,6 +48,7 @@ Has support for:
 
 See Git for the complete history, major changes will be listed below.
 
+- 2022120300 - Moodle 4.1 support implemented.
 - 2022120200 - Moodle workplace 4.0.5 support implemented.
 - 2020103000 - Moodle 3.11 support implemented.
 - 2020103000 - Moodle 3.10 support implemented.
