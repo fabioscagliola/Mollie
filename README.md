@@ -41,6 +41,7 @@ Has support for:
 ![Moodle310](https://img.shields.io/badge/moodle-3.10-brightgreen.svg)
 ![Moodle311](https://img.shields.io/badge/moodle-3.11-brightgreen.svg)
 ![Moodle4005](https://img.shields.io/badge/moodle-4.0.5-brightgreen.svg)
+![Moodle41](https://img.shields.io/badge/moodle-4.1-brightgreen.svg)
 ![PHP7.2](https://img.shields.io/badge/PHP-7.2-brightgreen.svg)
 ![PHP7.4](https://img.shields.io/badge/PHP-7.4-brightgreen.svg)
 
