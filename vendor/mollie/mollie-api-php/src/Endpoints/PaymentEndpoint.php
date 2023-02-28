@@ -15,7 +15,7 @@ class PaymentEndpoint extends CollectionEndpointAbstract
     /**
      * @var string
      */
-    const RESOURCE_ID_PREFIX = 'tr_';
+    public const RESOURCE_ID_PREFIX = 'tr_';
 
     /**
      * @return Payment
@@ -50,6 +50,26 @@ class PaymentEndpoint extends CollectionEndpointAbstract
     public function create(array $data = [], array $filters = [])
     {
         return $this->rest_create($data, $filters);
+    }
+
+    /**
+     * Update the given Payment.
+     *
+     * Will throw a ApiException if the payment id is invalid or the resource cannot be found.
+     *
+     * @param string $paymentId
+     *
+     * @param array $data
+     * @return Payment
+     * @throws ApiException
+     */
+    public function update($paymentId, array $data = [])
+    {
+        if (empty($paymentId) || strpos($paymentId, self::RESOURCE_ID_PREFIX) !== 0) {
+            throw new ApiException("Invalid payment ID: '{$paymentId}'. A payment ID should start with '".self::RESOURCE_ID_PREFIX."'.");
+        }
+
+        return parent::rest_update($paymentId, $data);
     }
 
     /**
@@ -137,7 +157,7 @@ class PaymentEndpoint extends CollectionEndpointAbstract
         $resource = "{$this->getResourcePath()}/" . urlencode($payment->id) . "/refunds";
 
         $body = null;
-        if (count($data) > 0) {
+        if (($data === null ? 0 : count($data)) > 0) {
             $body = json_encode($data);
         }
 
