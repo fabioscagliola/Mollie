@@ -45,10 +45,12 @@ require_once($CFG->libdir . '/formslib.php');
 class overview_courses_filter extends \moodleform {
 
     /**
+     * Form definition
+     *
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function definition() : void {
+    public function definition(): void {
         global $DB;
 
         // Get all courses.
@@ -78,4 +80,5 @@ class overview_courses_filter extends \moodleform {
 
         $this->add_action_buttons(false, get_string('btn:filter', 'enrol_coursepayment'));
     }
+
 }

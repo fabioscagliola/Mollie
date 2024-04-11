@@ -17,7 +17,7 @@
 /**
  * This file contains the coursepayment element studentname's core interaction API.
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -31,8 +31,6 @@
 
 namespace enrol_coursepayment\invoice\element\studentname;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The element studentname's core interaction API.
  *
@@ -45,11 +43,14 @@ class element extends \enrol_coursepayment\invoice\element {
     /**
      * Handles rendering the element on the pdf.
      *
-     * @param \pdf      $pdf     the pdf object
-     * @param bool      $preview true if it is a preview, false otherwise
-     * @param \stdClass $user    the user we are rendering this for
+     * @param \pdf $pdf       the pdf object
+     * @param bool $preview   true if it is a preview, false otherwise
+     * @param \stdClass $user the user we are rendering this for
+     * @param array $data     the data for the element
+     *
+     * @return void
      */
-    public function render($pdf, $preview, $user, array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []): void {
         \enrol_coursepayment\invoice\element_helper::render_content($pdf, $this, fullname($user));
     }
 
@@ -61,9 +62,10 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the html
      */
-    public function render_html() : string {
+    public function render_html(): string {
         global $USER;
 
         return \enrol_coursepayment\invoice\element_helper::render_html_content($this, fullname($USER));
     }
+
 }

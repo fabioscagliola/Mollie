@@ -24,6 +24,7 @@
  * @author    Luuk Verhoeven
  **/
 
+// These definitions should stay on top, before MOODLE_INTERNAL check.
 if (!defined('AJAX_SCRIPT')) {
     define('AJAX_SCRIPT', true);
 }
@@ -48,7 +49,7 @@ $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 // Get plugin config.
 $config = get_config('enrol_coursepayment');
 
-// Default return.
+// Default return array.
 $array = [
     'error' => '',
     'status' => false,

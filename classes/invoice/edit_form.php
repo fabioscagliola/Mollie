@@ -17,7 +17,7 @@
 /**
  * This file contains the form for handling the layout of the coursepayment template instance.
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -33,6 +33,7 @@ namespace enrol_coursepayment\invoice;
 
 defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
 
+global $CFG;
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once($CFG->dirroot . '/enrol/coursepayment/classes/invoice/colourpicker.php');
 
@@ -42,30 +43,31 @@ require_once($CFG->dirroot . '/enrol/coursepayment/classes/invoice/colourpicker.
 /**
  * The form for handling the layout of the customcert instance.
  *
- * @package    mod_customcert
+ * @package    enrol_coursepayment
  * @copyright  2013 Mark Nelson <markn@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class edit_form extends \moodleform {
 
     /**
-     * @var int The id of the template being used.
+     * @var int|null The id of the template being used.
      */
     protected $tid = null;
 
     /**
      * @var int The total number of pages for this cert.
      */
-    protected $numpages = 1;
+    protected int $numpages = 1;
 
     /**
      * Form definition.
      *
+     * @return void
      * @throws \coding_exception
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    public function definition() {
+    public function definition(): void {
         global $DB, $OUTPUT;
 
         $mform =& $this->_form;
@@ -117,9 +119,10 @@ class edit_form extends \moodleform {
     /**
      * Fill in the current page data for this coursepayment.
      *
+     * @return void
      * @throws \dml_exception
      */
-    public function definition_after_data() {
+    public function definition_after_data(): void {
         global $DB;
 
         $mform = $this->_form;
@@ -156,7 +159,7 @@ class edit_form extends \moodleform {
      * @return array the errors that were found
      * @throws \coding_exception
      */
-    public function validation($data, $files) : array {
+    public function validation($data, $files): array {
         $errors = parent::validation($data, $files);
 
         // Go through the data and check any width, height or margin  values.
@@ -177,11 +180,12 @@ class edit_form extends \moodleform {
      *
      * @param \stdClass $page the coursepayment page
      *
+     * @return void
      * @throws \coding_exception
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    protected function add_coursepayment_page_elements($page) {
+    protected function add_coursepayment_page_elements(\stdClass $page): void {
         global $DB, $OUTPUT;
 
         // Create the form object.
@@ -329,16 +333,16 @@ class edit_form extends \moodleform {
     }
 
     /**
-     * validate_width
+     * Validate width
      *
-     * @param $data
-     * @param $key
-     * @param $errors
+     * @param array $data
+     * @param string $key
+     * @param array $errors
      *
      * @return array
      * @throws \coding_exception
      */
-    protected function validate_width($data, $key, $errors) : array {
+    protected function validate_width($data, $key, $errors): array {
         if (strpos($key, 'pagewidth_') !== false) {
             $page = str_replace('pagewidth_', '', $key);
             $widthid = 'pagewidth_' . $page;
@@ -352,16 +356,16 @@ class edit_form extends \moodleform {
     }
 
     /**
-     * validate_height
+     * Validate height
      *
-     * @param $data
-     * @param $key
-     * @param $errors
+     * @param array $data
+     * @param string $key
+     * @param array $errors
      *
      * @return array
      * @throws \coding_exception
      */
-    protected function validate_height($data, $key, $errors) : array {
+    protected function validate_height($data, $key, $errors): array {
         if (strpos($key, 'pageheight_') !== false) {
             $page = str_replace('pageheight_', '', $key);
             $heightid = 'pageheight_' . $page;
@@ -375,16 +379,16 @@ class edit_form extends \moodleform {
     }
 
     /**
-     * validate_left_margin
+     * Validate left margin
      *
-     * @param $data
-     * @param $key
-     * @param $errors
+     * @param array $data
+     * @param string $key
+     * @param array $errors
      *
      * @return array
      * @throws \coding_exception
      */
-    protected function validate_left_margin($data, $key, $errors) : array {
+    protected function validate_left_margin($data, $key, $errors): array {
         if (strpos($key, 'pageleftmargin_') !== false) {
             // Validate that the left margin is a valid value.
             if (isset($data[$key]) && ($data[$key] < 0)) {
@@ -396,16 +400,16 @@ class edit_form extends \moodleform {
     }
 
     /**
-     * validate_right_margin
+     * Validate right margin
      *
-     * @param $data
-     * @param $key
-     * @param $errors
+     * @param array $data
+     * @param string $key
+     * @param array $errors
      *
      * @return array
      * @throws \coding_exception
      */
-    protected function validate_right_margin($data, $key, $errors) : array {
+    protected function validate_right_margin($data, $key, $errors): array {
         if (strpos($key, 'pagerightmargin_') !== false) {
             // Validate that the right margin is a valid value.
             if (isset($data[$key]) && ($data[$key] < 0)) {
@@ -415,4 +419,5 @@ class edit_form extends \moodleform {
 
         return $errors;
     }
+
 }

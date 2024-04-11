@@ -17,7 +17,7 @@
 /**
  * This file contains the coursepayment element orderdata's core interaction API.
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -30,8 +30,6 @@
  */
 
 namespace enrol_coursepayment\invoice\element\orderdata;
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * The  element text's core interaction API.
@@ -50,25 +48,26 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the text
      */
-    public function save_unique_data($data) {
+    public function save_unique_data($data): string {
         return '';
     }
 
     /**
      * Handles rendering the element on the pdf.
      *
-     * @param \pdf      $pdf     the pdf object
-     * @param bool      $preview true if it is a preview, false otherwise
-     * @param \stdClass $user    the user we are rendering this for
-     * @param array     $data
+     * @param \pdf $pdf       the pdf object
+     * @param bool $preview   true if it is a preview, false otherwise
+     * @param \stdClass $user the user we are rendering this for
+     * @param array $data
      *
+     * @return void
      * @throws \coding_exception
      */
-    public function render($pdf, $preview, $user, array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []): void {
         global $PAGE;
 
         if ($preview) {
-            $obj = (object)[
+            $obj = (object) [
                 'width' => '480',
                 'vat' => 21,
                 'subtotal' => number_format(100, 2, ',', ''),
@@ -77,7 +76,7 @@ class element extends \enrol_coursepayment\invoice\element {
                 'coursename' => get_string('orderdata:dummy_course', 'enrol_coursepayment'),
             ];
         } else {
-            $obj = (object)[
+            $obj = (object) [
                 'width' => '480',
                 'vat' => $data['a']->vatpercentage,
                 'subtotal' => $data['a']->costsub,
@@ -102,9 +101,9 @@ class element extends \enrol_coursepayment\invoice\element {
      * @return string the html
      * @throws \coding_exception
      */
-    public function render_html() : string {
+    public function render_html(): string {
         global $PAGE;
-        $dummydata = (object)[
+        $dummydata = (object) [
             'width' => '500',
             'vat' => 21,
             'subtotal' => number_format(100, 2, ',', ''),
@@ -118,4 +117,5 @@ class element extends \enrol_coursepayment\invoice\element {
 
         return $renderer->render_template('enrol_coursepayment/element_orderdata', $dummydata);
     }
+
 }

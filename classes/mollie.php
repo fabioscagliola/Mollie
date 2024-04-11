@@ -30,8 +30,6 @@ use Mollie\Api\Exceptions\IncompatiblePlatform;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Types\PaymentMethod;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Class enrol_coursepayment_mollie
  *
@@ -60,7 +58,6 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
     /**
      * enrol_coursepayment_mollie constructor.
      *
-     * @throws  ApiException
      * @throws ApiException
      * @throws IncompatiblePlatform
      */
@@ -78,10 +75,10 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
     /**
      *  Reload api key
      *
-     * @throws  ApiException
+     * @return void
      * @throws ApiException
      */
-    protected function reload_api_key() {
+    protected function reload_api_key(): void {
         $this->client->setApiKey($this->config->apikey);
     }
 
@@ -95,8 +92,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @return array
      * @throws moodle_exception
      */
-    public function new_order_activity($method = '', $issuer = '', $discountcode = '') : array {
-
+    public function new_order_activity($method = '', $issuer = '', $discountcode = ''): array {
         global $CFG, $DB;
 
         // Extra order data.
@@ -132,9 +128,9 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 return ['status' => false];
             }
 
-            $invoice_number = $this->get_new_invoice_number();
+            $invoicenumber = $this->get_new_invoice_number();
 
-            //https://docs.mollie.com/reference/v2/payments-api/create-payment#
+            // Mollie documentation: https://docs.mollie.com/reference/v2/payments-api/create-payment# .
             $request = [
                 "amount" => [
                     'value' => number_format($order['cost'], 2, '.', ''),
@@ -142,14 +138,16 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 ],
                 "method" => $method,
                 "locale" => $this->get_gateway_locale(),
-                "description" => $this->get_payment_description((object)[
-                    'invoice_number' => $invoice_number,
+                "description" => $this->get_payment_description((object) [
+                    'invoice_number' => $invoicenumber,
                     'instanceid' => $this->instanceconfig->instanceid,
                     'addedon' => time(),
                     'courseid' => $this->instanceconfig->courseid,
                 ]),
-                "redirectUrl" => $CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
-                "webhookUrl" => $CFG->wwwroot . '/enrol/coursepayment/ipn/mollie.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
+                "redirectUrl" => $CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' .
+                    $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
+                "webhookUrl" => $CFG->wwwroot . '/enrol/coursepayment/ipn/mollie.php?orderid=' . $order['orderid'] . '&gateway=' .
+                    $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
                 "metadata" => [
                     "order_id" => $order['orderid'],
                     "id" => $order['id'],
@@ -162,7 +160,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
             // Update the local order we add the gateway identifier to the order.
             $obj = new stdClass();
-            $obj->invoice_number = $invoice_number;
+            $obj->invoice_number = $invoicenumber;
             $obj->id = $order['id'];
             $obj->gateway_transaction_id = $payment->id;
             $DB->update_record('enrol_coursepayment', $obj);
@@ -189,20 +187,20 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws moodle_exception
      */
-    public function new_order_course($method = '', $issuer = '', $discountcode = '') : array {
+    public function new_order_course($method = '', $issuer = '', $discountcode = ''): array {
 
         global $CFG, $DB;
 
-        // extra order data
+        // Extra order data.
         $data = [];
         if (!empty($discountcode)) {
 
-            // validate the discountcode we received
+            // Validate the discountcode we received.
             $discountinstance = new enrol_coursepayment_discountcode($discountcode, $this->instanceconfig->courseid);
             $row = $discountinstance->get_discountcode();
 
             if ($row) {
-                // looks okay we need to save this to the order
+                // Looks okay we need to save this to the order.
                 $data['discount'] = $row;
             } else {
 
@@ -214,18 +212,19 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             }
         }
 
-        // add new internal order
+        // Add new internal order.
         $order = $this->create_new_course_order_record($data);
 
         try {
 
             if ($order['cost'] == 0) {
-                redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
+                redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' .
+                    $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
 
                 return [];
             }
 
-            $invoice_number = $this->get_new_invoice_number();
+            $invoicenumber = $this->get_new_invoice_number();
             $request = [
                 "amount" => [
                     'value' => number_format($order['cost'], 2, '.', ''),
@@ -233,14 +232,16 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 ],
                 "method" => $method,
                 "locale" => $this->get_gateway_locale(),
-                "description" => $this->get_payment_description((object)[
-                    'invoice_number' => $invoice_number,
+                "description" => $this->get_payment_description((object) [
+                    'invoice_number' => $invoicenumber,
                     'addedon' => time(),
                     'instanceid' => $this->instanceconfig->instanceid,
                     'courseid' => $this->instanceconfig->courseid,
                 ]),
-                "redirectUrl" => $CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
-                "webhookUrl" => $CFG->wwwroot . '/enrol/coursepayment/ipn/mollie.php?orderid=' . $order['orderid'] . '&gateway=' . $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
+                "redirectUrl" => $CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' .
+                    $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
+                "webhookUrl" => $CFG->wwwroot . '/enrol/coursepayment/ipn/mollie.php?orderid=' . $order['orderid'] . '&gateway=' .
+                    $this->name . '&instanceid=' . $this->instanceconfig->instanceid,
                 "metadata" => [
                     "order_id" => $order['orderid'],
                     "id" => $order['id'],
@@ -250,17 +251,17 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 "issuer" => !empty($issuer) ? $issuer : null,
             ];
 
-            //https://docs.mollie.com/reference/v2/payments-api/create-payment#
+            // Mollie documentation: https://docs.mollie.com/reference/v2/payments-api/create-payment# .
             $payment = $this->client->payments->create($request);
 
-            // update the local order we add the gateway identifier to the order
+            // Update the local order we add the gateway identifier to the order.
             $obj = new stdClass();
             $obj->id = $order['id'];
-            $obj->invoice_number = $invoice_number;
+            $obj->invoice_number = $invoicenumber;
             $obj->gateway_transaction_id = $payment->id;
             $DB->update_record('enrol_coursepayment', $obj);
 
-            // send the user to the gateway payment page
+            // Send the user to the gateway payment page.
             redirect($payment->getCheckoutUrl());
 
         } catch (ApiException $e) {
@@ -273,10 +274,10 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
     /**
      * handle the return of payment provider
      *
-     * @return boolean
+     * @return bool
      */
-    public function callback() {
-        return true;// not used for now
+    public function callback(): bool {
+        return true; // Not used for now.
     }
 
     /**
@@ -289,11 +290,11 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws moodle_exception
      */
-    public function order_form($standalone = false) : string {
+    public function order_form(bool $standalone = false): string {
 
         global $PAGE;
 
-        // check if the gateway is enabled
+        // Check if the gateway is enabled.
         if ($this->config->enabled == 0) {
             return '';
         }
@@ -309,7 +310,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         $discountcode = optional_param('discountcode', false, PARAM_ALPHANUMEXT);
         $status = [];
 
-        // method is selected by the user
+        // Method is selected by the user.
         if (!empty($method) || !empty($issuer)) {
             // Allow empty method.
             $method = !empty($issuer) ? 'ideal' : $method;
@@ -324,7 +325,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             }
 
             if (isset($status['status']) && $status['status'] == false) {
-                // we showing the same form again
+                // We show the same form again.
             } else {
                 return '';
             }
@@ -342,7 +343,6 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 $string = $this->form_inline($discountcode, $status);
             }
 
-
         } catch (ApiException $e) {
             $this->log("API call failed: " . htmlspecialchars($e->getMessage()));
         }
@@ -357,7 +357,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @return string
      * @throws coding_exception
      */
-    public function get_enabled_modes() : string {
+    public function get_enabled_modes(): string {
 
         $string = '';
         try {
@@ -372,11 +372,15 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                             </tr>';
 
             foreach ($methods as $method) {
+
+                // TODO: maximumAmount is not always set.
+                $maximumamount = $method->maximumAmount ? $method->maximumAmount->value : 0;
+
                 $string .= '<tr>';
                 $string .= '<td><img src="' . htmlspecialchars($method->image->svg) . '"> </td>';
                 $string .= '<td>' . htmlspecialchars($method->description) . '</td>';
                 $string .= '<td>' . $method->minimumAmount->value . '</td>';
-                $string .= '<td>' . $method->maximumAmount->value . '</td>';
+                $string .= '<td>' . $maximumamount . '</td>';
                 $string .= '</tr>';
             }
             $string .= '</table>';
@@ -397,12 +401,12 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws moodle_exception
      */
-    public function validate_order($orderid = '') : array {
+    public function validate_order($orderid = ''): array {
         global $DB;
 
         $status = parent::validate_order($orderid);
         if (!empty($status)) {
-            // first let it check by main class
+            // First let it check by main class.
             return [
                 'status' => true,
                 'message' => 'free_payment',
@@ -414,7 +418,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             'message' => '',
         ];
 
-        // first check if we know of it
+        // First check if we know of it.
         $enrolcoursepayment = $DB->get_record('enrol_coursepayment', [
             'orderid' => $orderid,
             'gateway' => $this->name,
@@ -422,7 +426,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         if ($enrolcoursepayment) {
 
-            // missing a transactionid this is not good
+            // Missing a transactionid this is not good.
             if (empty($enrolcoursepayment->gateway_transaction_id)) {
                 $obj = new stdClass();
                 $obj->id = $enrolcoursepayment->id;
@@ -436,7 +440,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 return $return;
             }
 
-            // payment already marked as paid
+            // Payment already marked as paid.
             if ($enrolcoursepayment->status == self::PAYMENT_STATUS_SUCCESS) {
                 $return['status'] = true;
                 $return['message'] = 'already_marked_as_paid';
@@ -449,17 +453,17 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 $this->load_multi_account_config($enrolcoursepayment->userid);
 
                 // Reload API key.
-                $this->reload_api_key(); // use new settings if needed.
+                $this->reload_api_key(); // Use new settings if needed.
 
-                // get details from gateway
+                // Get details from gateway.
                 $payment = $this->client->payments->get($enrolcoursepayment->gateway_transaction_id);
                 $obj = new stdClass();
                 $obj->id = $enrolcoursepayment->id;
                 $obj->timeupdated = time();
 
                 if ($payment->isPaid() == true && $enrolcoursepayment->status != self::PAYMENT_STATUS_SUCCESS) {
-                    // Sending the invoice to customer
-                    // Make sure we save invoice number to prevent incorrect number
+                    // Sending the invoice to customer.
+                    // Make sure we save invoice number to prevent incorrect number.
                     $this->send_invoice($enrolcoursepayment, ucfirst($this->name));
                     $DB->update_record('enrol_coursepayment', $obj);
 
@@ -472,14 +476,14 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 } else if ($payment->isOpen() == false) {
 
                     // The payment isn't paid and isn't open anymore. We can assume it was aborted.
-                    // we can mark this payment as aborted
+                    // We can mark this payment as aborted.
                     $obj->status = self::PAYMENT_STATUS_ABORT;
                     $return['message'] = get_string('error:paymentabort', 'enrol_coursepayment');
 
                 } else if ($payment->isOpen()) {
 
-                    // The payment isn't paid and isn't open anymore. We can assume it was aborted.
-                    // we can mark this payment as aborted
+                    // The payment isn't paid and is still open. We can assume it awaits payment.
+                    // We can mark this payment as waiting.
                     $obj->status = self::PAYMENT_STATUS_WAITING;
                     $return['message'] = get_string('error:waiting_on_payment', 'enrol_coursepayment');
                 }
@@ -502,9 +506,10 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * This function will update invoice numbers
      * Only needed when upgrading a version lower then 2015061201
      *
+     * @return void
      * @throws dml_exception
      */
-    public function upgrade_invoice_numbers() : void {
+    public function upgrade_invoice_numbers(): void {
 
         global $DB;
 
@@ -512,7 +517,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
         foreach ($results as $result) {
 
-            // Making sure its a real payment, no invoice number will be generated for a test order
+            // Making sure its a real payment, no invoice number will be generated for a test order.
             try {
                 $item = $this->client->payments->get($result->gateway_transaction_id);
                 if (!empty($item)) {
@@ -609,7 +614,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws ApiException
      */
-    private function form_inline($discountcode = '', $status = '') : string {
+    private function form_inline($discountcode = '', $status = ''): string {
 
         $string = '<div align="center">
                             <p>' . get_string('gateway_mollie_select_method', 'enrol_coursepayment') . '</p>
@@ -629,10 +634,12 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                 $string .= '<tr id="issuers_ideal" class="skip">
                                     <td>
                                     <select name="issuer">
-                                        <option value="">' . get_string('gateway_mollie_issuers', 'enrol_coursepayment') . '</option>';
+                                        <option value="">' . get_string('gateway_mollie_issuers', 'enrol_coursepayment') .
+                    '</option>';
 
                 foreach ($method->issuers as $issuer) {
-                    $string .= '<option value=' . htmlspecialchars($issuer->id) . '>' . htmlspecialchars($issuer->name) . '</option>';
+                    $string .= '<option value=' . htmlspecialchars($issuer->id) . '>' . htmlspecialchars($issuer->name) .
+                        '</option>';
                 }
                 $string .= '</select></td><td>&nbsp;</td></tr>';
             }
@@ -647,7 +654,8 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         $string .= $this->form_discount_code($discountcode, $status);
         $string .= '<input type="hidden" name="gateway" value="' . $this->name . '" />
                     <input type="hidden" id="input_method" name="method" value="" />
-                    <input type="submit" class="form-submit btn btn-primary coursepayment-btn" value="' . get_string('purchase', "enrol_coursepayment") . '" />
+                    <input type="submit" class="form-submit btn btn-primary coursepayment-btn" value="' .
+            get_string('purchase', "enrol_coursepayment") . '" />
                 </form>
             </div>';
 
@@ -665,7 +673,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws ApiException
      */
-    private function form_standalone($discountcode = '', $status = '') : string {
+    private function form_standalone($discountcode = '', $status = ''): string {
         global $SITE;
         $currency = ($this->instanceconfig->currency === 'EUR') ? '&euro;' : '&dollar;';
 
@@ -701,7 +709,8 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 
                 foreach ($method->issuers as $issuer) {
                     $string .= '<li>
-                                        <button type="submit" class="grid-button" name="issuer" value="' . htmlspecialchars($issuer->id) . '">
+                                        <button type="submit" class="grid-button" name="issuer" value="' .
+                        htmlspecialchars($issuer->id) . '">
                                             <img src="' . $issuer->image->svg . '" alt=""/><br>
                                             ' . htmlspecialchars($issuer->name) . '
                                         </button>
@@ -724,7 +733,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
         $string .= '<input type="hidden" name="gateway" value="' . $this->name . '" />
                     </div>
                 </form>
-            </div>  
+            </div>
             <p id="provider-notice">
                  ' . get_string('gateway_mollie_backlink', 'enrol_coursepayment', $SITE) . '
             </p>

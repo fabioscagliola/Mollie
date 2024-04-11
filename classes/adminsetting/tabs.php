@@ -25,13 +25,32 @@
  */
 
 namespace enrol_coursepayment\adminsetting;
-defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class tabs
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2017 MFreak.nl
+ * @author    Luuk Verhoeven
+ */
 class tabs extends \admin_setting {
 
-    protected $tabs = [0 => []];
+    /**
+     * @var array[] $tabs The tabs to display.
+     */
+    protected array $tabs = [0 => []];
+
+    /**
+     * @var mixed $selected The currently selected tab.
+     */
     protected $selected;
-    protected $section;
+
+    /**
+     * @var string $section The section name.
+     */
+    protected string $section;
 
     /**
      * Config fileupload constructor
@@ -43,7 +62,7 @@ class tabs extends \admin_setting {
      *
      * @throws \coding_exception
      */
-    public function __construct($name, $section, $default = '') {
+    public function __construct(string $name, string $section, string $default = '') {
         parent::__construct($name, '', '', '');
         $this->section = $section;
 
@@ -54,7 +73,7 @@ class tabs extends \admin_setting {
     /**
      * Return the currently selected tab.
      *
-     * @return int The id of the currently selected tab.
+     * @return mixed The id of the currently selected tab.
      */
     public function get_setting() {
         return $this->selected;
@@ -69,7 +88,7 @@ class tabs extends \admin_setting {
      *
      * @return string Always returns an empty string
      */
-    public function write_setting($params) {
+    public function write_setting($params): string {
         $result = '';
 
         if (isset($params['action'])) {
@@ -91,15 +110,15 @@ class tabs extends \admin_setting {
     /**
      * Add a tab to the tab row
      *
-     * For now we only implement a single row.  Multiple rows could be added as an extension
+     * For now, we only implement a single row.  Multiple rows could be added as an extension
      * later.
      *
-     * @param int    $id   The tab id
+     * @param string $id      The tab id
      * @param string $name The tab name
      *
      * @throws \moodle_exception
      */
-    public function addtab($id, $name) : void {
+    public function addtab(string $id, string $name): void {
 
         $urlparams = [
             'section' => $this->section,
@@ -114,12 +133,12 @@ class tabs extends \admin_setting {
     /**
      * Returns an HTML string
      *
-     * @param mixed  $params Array or string depending on setting
-     * @param string $query  Query
+     * @param mixed $params Array or string depending on setting
+     * @param string $query Query
      *
      * @return string Returns an HTML string
      */
-    public function output_html($params, $query = '') : string {
+    public function output_html($params, $query = ''): string {
 
         $html = print_tabs($this->tabs, $this->selected, null, null, true);
 
@@ -138,4 +157,5 @@ class tabs extends \admin_setting {
 
         return $html;
     }
+
 }

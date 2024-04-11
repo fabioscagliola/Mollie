@@ -17,7 +17,7 @@
 /**
  * This file contains the coursepayment element orderdata's core interaction API.
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -32,8 +32,6 @@
 namespace enrol_coursepayment\invoice\element\invoiceinfo;
 
 use enrol_coursepayment\invoice\element_helper;
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * The  element text's core interaction API.
@@ -52,22 +50,22 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the text
      */
-    public function save_unique_data($data) {
+    public function save_unique_data($data): string {
         return '';
     }
 
     /**
      * Handles rendering the element on the pdf.
      *
-     * @param \pdf      $pdf     the pdf object
-     * @param bool      $preview true if it is a preview, false otherwise
-     * @param \stdClass $user    the user we are rendering this for
+     * @param \pdf $pdf       the pdf object
+     * @param bool $preview   true if it is a preview, false otherwise
+     * @param \stdClass $user the user we are rendering this for
      *
-     * @param array     $data
+     * @param array $data
      *
      * @throws \dml_exception
      */
-    public function render($pdf, $preview, $user, array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []): void {
         global $PAGE;
 
         $renderer = $PAGE->get_renderer('enrol_coursepayment');
@@ -84,7 +82,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @return object
      * @throws \dml_exception
      */
-    public function get_invoiceinfo(array $data = []) {
+    public function get_invoiceinfo(array $data = []): object {
 
         // We are testing.
         if (empty($data)) {
@@ -92,7 +90,7 @@ class element extends \enrol_coursepayment\invoice\element {
         }
 
         $pluginconfig = get_config('enrol_coursepayment');
-        $invoiceinfo = (object)[
+        $invoiceinfo = (object) [
             'companyname' => $pluginconfig->companyname,
             'address' => $pluginconfig->address,
             'place' => $pluginconfig->place,
@@ -121,7 +119,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @return string the html
      * @throws \dml_exception
      */
-    public function render_html() : string {
+    public function render_html(): string {
         global $PAGE;
         // Dummy.
         $invoiceinfo = $this->dummy_data();
@@ -132,12 +130,14 @@ class element extends \enrol_coursepayment\invoice\element {
     }
 
     /**
+     * Dummy data for testing.
+     *
      * @return \stdClass
      * @throws \dml_exception
      */
-    public function dummy_data() : \stdClass {
+    public function dummy_data(): \stdClass {
         $pluginconfig = get_config('enrol_coursepayment');
-        $invoiceinfo = (object)[
+        $invoiceinfo = (object) [
             'companyname' => $pluginconfig->companyname,
             'address' => $pluginconfig->address,
             'place' => $pluginconfig->place,
@@ -151,4 +151,5 @@ class element extends \enrol_coursepayment\invoice\element {
 
         return $invoiceinfo;
     }
+
 }

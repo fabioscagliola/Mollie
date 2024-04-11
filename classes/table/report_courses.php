@@ -19,7 +19,7 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package   coursepayment
+ * @package   enrol_coursepayment
  * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
@@ -28,8 +28,15 @@ namespace enrol_coursepayment\table;
 
 use enrol_coursepayment_gateway;
 
-defined('MOODLE_INTERNAL') || die;
-
+/**
+ * Class report_courses
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2018 MFreak.nl
+ * @author    Luuk Verhoeven
+ **/
 class report_courses extends \flexible_table {
 
     /**
@@ -56,10 +63,12 @@ class report_courses extends \flexible_table {
     /**
      * small hack to allow flexible_table php sorting with already parsed data
      *
-     * @param array      $data
-     * @param bool|array $filterdata
+     * @param array $data
+     * @param bool|array|object $filterdata
+     *
+     * @return void
      */
-    public function data_sort_and_search($data = [], $filterdata = false) : void {
+    public function data_sort_and_search(array $data = [], $filterdata = false): void {
 
         // Allow coll sorting.
         $sort = $this->get_sort_for_table($this->uniqueid);
@@ -99,7 +108,7 @@ class report_courses extends \flexible_table {
             }
 
             // Map keys to decorators.
-            array_walk($row, function (&$value, $key) use ($row) {
+            array_walk($row, function(&$value, $key) use ($row) {
 
                 // Real magic :).
                 if (is_callable([$this, 'col_' . $key])) {
@@ -115,16 +124,16 @@ class report_courses extends \flexible_table {
     /**
      * Search in array
      *
-     * @param string $filterdata The string array element to search for
-     * @param array  $stack      The stack to search within for the child
+     * @param array|object $filterdata The string array element to search for
+     * @param array $stack       The stack to search within for the child
      *
      * @return array
      */
-    protected function search($filterdata, $stack) : array {
+    protected function search($filterdata, array $stack): array {
 
-        $needed = count((array)$filterdata) - 1; // Total search filters - submit_btn.
+        $needed = count((array) $filterdata) - 1; // Total search filters - submit_btn.
 
-        return array_filter($stack, function ($row) use ($filterdata, $needed) {
+        return array_filter($stack, static function($row) use ($filterdata, $needed) {
             $matches = 0;
             // Loop throw the filtering.
             foreach ($filterdata as $key => $value) {
@@ -167,7 +176,7 @@ class report_courses extends \flexible_table {
      *
      * @return string
      */
-    public function col_phone1(\stdClass $row) : string {
+    public function col_phone1(\stdClass $row): string {
         return !empty($row->phone1) ? $row->phone1 : $row->phone2;
     }
 
@@ -179,7 +188,7 @@ class report_courses extends \flexible_table {
      * @return string
      * @throws \coding_exception
      */
-    public function col_status(\stdClass $row) : string {
+    public function col_status(\stdClass $row): string {
 
         switch ($row->status) {
 
@@ -224,7 +233,7 @@ class report_courses extends \flexible_table {
      *
      * @return false|string
      */
-    public function col_addedon(\stdClass $row) : string {
+    public function col_addedon(\stdClass $row) {
         return date('d.m.Y H:i:s', $row->addedon);
     }
 

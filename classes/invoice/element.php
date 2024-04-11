@@ -17,7 +17,7 @@
 /**
  * The base element class
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -30,7 +30,6 @@
  */
 
 namespace enrol_coursepayment\invoice;
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * Class element
@@ -42,67 +41,67 @@ abstract class element {
     /**
      * @var \stdClass $element The data for the element we are adding - do not use, kept for legacy reasons.
      */
-    protected $element;
+    protected \stdClass $element;
 
     /**
-     * @var int The id.
+     * @var int|null The id.
      */
     protected $id;
 
     /**
-     * @var int The page id.
+     * @var int|null The page id.
      */
     protected $pageid;
 
     /**
      * @var string The name.
      */
-    protected $name;
+    protected string $name;
 
     /**
-     * @var mixed The data.
+     * @var mixed|null The data.
      */
     protected $data;
 
     /**
-     * @var string The font name.
+     * @var string|null The font name.
      */
     protected $font;
 
     /**
-     * @var int The font size.
+     * @var int|null The font size.
      */
     protected $fontsize;
 
     /**
-     * @var string The font colour.
+     * @var string|null The font colour.
      */
     protected $colour;
 
     /**
-     * @var int The position x.
+     * @var int|null The position x.
      */
     protected $posx;
 
     /**
-     * @var int The position y.
+     * @var int|null The position y.
      */
     protected $posy;
 
     /**
-     * @var int The width.
+     * @var int|null The width.
      */
     protected $width;
 
     /**
-     * @var int The refpoint.
+     * @var int|null The refpoint.
      */
     protected $refpoint;
 
     /**
      * @var bool $showposxy Show position XY form elements?
      */
-    protected $showposxy;
+    protected bool $showposxy;
 
     /**
      * Constructor.
@@ -110,9 +109,9 @@ abstract class element {
      * @param \stdClass $element the element data
      *
      */
-    public function __construct($element) {
+    public function __construct(\stdClass $element) {
 
-        // Keeping this for legacy reasons so we do not break third-party elements.
+        // Keeping this for legacy reasons, so we do not break third-party elements.
         $this->element = clone($element);
 
         $this->id = $element->id;
@@ -134,7 +133,7 @@ abstract class element {
      *
      * @return int
      */
-    public function get_id() : int {
+    public function get_id(): int {
         return $this->id;
     }
 
@@ -143,7 +142,7 @@ abstract class element {
      *
      * @return int
      */
-    public function get_pageid() : int {
+    public function get_pageid(): int {
         return $this->pageid;
     }
 
@@ -152,7 +151,7 @@ abstract class element {
      *
      * @return string
      */
-    public function get_name() : string {
+    public function get_name(): string {
         return $this->name;
     }
 
@@ -170,7 +169,7 @@ abstract class element {
      *
      * @return string
      */
-    public function get_font() : string {
+    public function get_font(): string {
         return $this->font;
     }
 
@@ -179,7 +178,7 @@ abstract class element {
      *
      * @return int
      */
-    public function get_fontsize() : int {
+    public function get_fontsize(): int {
         return $this->fontsize;
     }
 
@@ -188,7 +187,7 @@ abstract class element {
      *
      * @return string
      */
-    public function get_colour() : string {
+    public function get_colour(): string {
         return $this->colour;
     }
 
@@ -197,7 +196,7 @@ abstract class element {
      *
      * @return int
      */
-    public function get_posx() : int {
+    public function get_posx(): int {
         return $this->posx;
     }
 
@@ -206,7 +205,7 @@ abstract class element {
      *
      * @return int
      */
-    public function get_posy() {
+    public function get_posy(): int {
         return $this->posy;
     }
 
@@ -215,7 +214,7 @@ abstract class element {
      *
      * @return int
      */
-    public function get_width() {
+    public function get_width(): int {
         return $this->width;
     }
 
@@ -224,7 +223,7 @@ abstract class element {
      *
      * @return int
      */
-    public function get_refpoint() {
+    public function get_refpoint(): int {
         return $this->refpoint;
     }
 
@@ -234,9 +233,10 @@ abstract class element {
      *
      * @param edit_element_form $mform the edit_form instance.
      *
+     * @return void
      * @throws \coding_exception
      */
-    public function render_form_elements($mform) : void {
+    public function render_form_elements($mform): void {
         // Render the common elements.
         element_helper::render_form_element_font($mform);
         element_helper::render_form_element_colour($mform);
@@ -251,8 +251,10 @@ abstract class element {
      * Can be overridden if more functionality is needed.
      *
      * @param edit_element_form $mform the edit_form instance
+     *
+     * @return void
      */
-    public function definition_after_data($mform) : void {
+    public function definition_after_data($mform): void {
         // Loop through the properties of the element and set the values
         // of the corresponding form element, if it exists.
         $properties = [
@@ -283,7 +285,7 @@ abstract class element {
      * @return array the validation errors
      * @throws \coding_exception
      */
-    public function validate_form_elements($data, $files) : array {
+    public function validate_form_elements($data, $files): array {
         // Array to return the errors.
         $errors = [];
 
@@ -306,7 +308,7 @@ abstract class element {
      * @return bool true of success, false otherwise.
      * @throws \dml_exception
      */
-    public function save_form_elements($data) {
+    public function save_form_elements($data): bool {
         global $DB;
 
         // Get the data from the form.
@@ -348,7 +350,7 @@ abstract class element {
      *
      * @return string the unique data to save
      */
-    public function save_unique_data($data) {
+    public function save_unique_data($data): string {
         return '';
     }
 
@@ -360,7 +362,7 @@ abstract class element {
      *
      * @return bool returns true if the data was copied successfully, false otherwise
      */
-    public function copy_element($data) : bool {
+    public function copy_element($data): bool {
         return true;
     }
 
@@ -369,12 +371,12 @@ abstract class element {
      *
      * Must be overridden.
      *
-     * @param \pdf      $pdf     the pdf object
-     * @param bool      $preview true if it is a preview, false otherwise
-     * @param \stdClass $user    the user we are rendering this for
-     * @param array     $data    extra data provided by coursepayment
+     * @param \pdf $pdf       the pdf object
+     * @param bool $preview   true if it is a preview, false otherwise
+     * @param \stdClass $user the user we are rendering this for
+     * @param array $data     extra data provided by coursepayment
      */
-    public abstract function render($pdf, $preview, $user, array $data = []);
+    abstract public function render($pdf, $preview, $user, array $data = []);
 
     /**
      * Render the element in html.
@@ -386,7 +388,7 @@ abstract class element {
      *
      * @return string the html
      */
-    public abstract function render_html() : string;
+    abstract public function render_html(): string;
 
     /**
      * Handles deleting any data this element may have introduced.
@@ -395,7 +397,7 @@ abstract class element {
      * @return bool success return true if deletion success, false otherwise
      * @throws \dml_exception
      */
-    public function delete() : bool {
+    public function delete(): bool {
         global $DB;
 
         return $DB->delete_records('coursepayment_elements', ['id' => $this->id]);
@@ -409,8 +411,10 @@ abstract class element {
      * be different in the new course.
      *
      * @param \restore_coursepayment_activity_task $restore
+     *
+     * @return void
      */
-    public function after_restore($restore) {
+    public function after_restore($restore): void {
 
     }
 
@@ -419,12 +423,13 @@ abstract class element {
      *
      * @param string $name
      *
-     * @return
+     * @return string|void
      */
-    public function __get($name) {
+    public function __get(string $name) {
         debugging('Please call the appropriate get_* function instead of relying on magic getters', DEBUG_DEVELOPER);
         if (property_exists($this->element, $name)) {
             return $this->element->$name;
         }
     }
+
 }

@@ -30,25 +30,24 @@ Has support for:
 
 ##### Requirements:
 
-* Requires at least: Moodle 3.5
-* Supports PHP: 7.2, 7.4
+* Requires at least: Moodle 3.9
+* Supports PHP: 7.4, 8.0
 
-![Moodle35](https://img.shields.io/badge/moodle-3.5-brightgreen.svg)
-![Moodle36](https://img.shields.io/badge/moodle-3.6-brightgreen.svg)
-![Moodle37](https://img.shields.io/badge/moodle-3.7-brightgreen.svg)
-![Moodle38](https://img.shields.io/badge/moodle-3.8-brightgreen.svg)
 ![Moodle39](https://img.shields.io/badge/moodle-3.9-brightgreen.svg)
 ![Moodle310](https://img.shields.io/badge/moodle-3.10-brightgreen.svg)
 ![Moodle311](https://img.shields.io/badge/moodle-3.11-brightgreen.svg)
 ![Moodle4005](https://img.shields.io/badge/moodle-4.0.5-brightgreen.svg)
 ![Moodle41](https://img.shields.io/badge/moodle-4.1-brightgreen.svg)
-![PHP7.2](https://img.shields.io/badge/PHP-7.2-brightgreen.svg)
+![Moodle43](https://img.shields.io/badge/moodle-4.3-brightgreen.svg)
+
 ![PHP7.4](https://img.shields.io/badge/PHP-7.4-brightgreen.svg)
+![PHP8.0](https://img.shields.io/badge/PHP-8.0-brightgreen.svg)
 
 ### Changelog
 
 See Git for the complete history, major changes will be listed below.
 
+- 2024041100 - Moodle 4.3 support implemented.
 - 2022120300 - Moodle 4.1 support implemented.
 - 2022120200 - Moodle workplace 4.0.5 support implemented.
 - 2020103000 - Moodle 3.11 support implemented.
@@ -72,7 +71,6 @@ See Git for the complete history, major changes will be listed below.
 - 2015061201 - We added invoice mail support.
 
 ### Security Vulnerabilities
-
 
 If you discover any security vulnerabilities, please send an e-mail via [luuk@ldesignmedia.nl](luuk@ldesignmedia.nl)
 

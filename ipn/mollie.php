@@ -54,5 +54,5 @@ if ($return['status'] == true) {
  */
 function enrol_coursepayment_ipn_exception_handler($ex) {
     $info = get_exception_info($ex);
-    echo "IPN exception handler: " . $info->message;;
+    echo "IPN exception handler: " . $info->message;
 }

@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- *
+ * Report
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package   coursepayment
+ * @package   enrol_coursepayment
  * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
@@ -29,25 +29,31 @@ namespace enrol_coursepayment;
 use enrol_coursepayment\table\report_courses;
 
 defined('MOODLE_INTERNAL') || die;
+
+global $CFG;
 require_once($CFG->libdir . '/tablelib.php');
 
 /**
  * Class report
  *
- * @package enrol_coursepayment
- */
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2018 MFreak.nl
+ * @author    Luuk Verhoeven
+ **/
 class report {
 
     /**
-     * table_overview_courses
+     * Table overview courses
      *
-     * @param      $datafilter
+     * @param object|null $datafilter
      *
      * @throws \coding_exception
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    public static function table_overview_courses($datafilter) : void {
+    public static function table_overview_courses($datafilter): void {
         global $PAGE;
         $columns = [
             'firstname',
@@ -68,7 +74,7 @@ class report {
         $table->define_columns($columns);
 
         $table->define_headers(
-            array_map(function ($val) {
+            array_map(static function($val) {
                 return get_string('heading:table_' . $val, 'enrol_coursepayment');
             }, $columns)
         );
@@ -92,13 +98,15 @@ class report {
     }
 
     /**
-     * get_all_courses_data
+     * Get all courses data
+     *
+     * @param object|null $datafilter
      *
      * @return array
      * @throws \dml_exception
      * @throws \coding_exception
      */
-    private static function get_all_courses_data($datafilter) : array {
+    private static function get_all_courses_data($datafilter): array {
         global $DB;
 
         $sql = 'SELECT cp.* , u.firstname , u.lastname , u.phone1 , u.phone2 , u.email, c.fullname as course

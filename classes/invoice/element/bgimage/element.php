@@ -17,7 +17,7 @@
 /**
  * This file contains the coursepayment element bgimage's core interaction API.
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -30,8 +30,6 @@
  */
 
 namespace enrol_coursepayment\invoice\element\bgimage;
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * The element background image's core interaction API.
@@ -47,10 +45,11 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
      *
      * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
      *
+     * @return void
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function render_form_elements($mform) : void {
+    public function render_form_elements($mform): void {
         $mform->addElement('select', 'fileid', get_string('image', 'enrol_coursepayment'), self::get_images());
         $mform->addElement('filemanager', 'coursepaymentimage', get_string('uploadimage', 'enrol_coursepayment'), '',
             $this->filemanageroptions);
@@ -64,7 +63,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
      *
      * @return array the validation errors
      */
-    public function validate_form_elements($data, $files) : array {
+    public function validate_form_elements($data, $files): array {
         // Array to return the errors.
         return [];
     }
@@ -72,12 +71,14 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
     /**
      * Handles rendering the element on the pdf.
      *
-     * @param \pdf      $pdf     the pdf object
-     * @param bool      $preview true if it is a preview, false otherwise
-     * @param \stdClass $user    the user we are rendering this for
-     * @param array     $data
+     * @param \pdf $pdf       the pdf object
+     * @param bool $preview   true if it is a preview, false otherwise
+     * @param \stdClass $user the user we are rendering this for
+     * @param array $data
+     *
+     * @return void
      */
-    public function render($pdf, $preview, $user, array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []): void {
         // If there is no element data, we have nothing to display.
         if (empty($this->get_data())) {
             return;
@@ -113,7 +114,7 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
      * @return string the html
      * @throws \dml_exception
      */
-    public function render_html() : string {
+    public function render_html(): string {
         global $DB;
 
         // If there is no element data, we have nothing to display.
@@ -142,5 +143,6 @@ class element extends \enrol_coursepayment\invoice\element\image\element {
 
         return '';
     }
+
 }
 

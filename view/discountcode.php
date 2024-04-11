@@ -33,7 +33,8 @@ require_login();
 $context = context_system::instance();
 
 if (!has_capability('enrol/coursepayment:config', $context)) {
-    print_error("error:capability_config", 'enrol_coursepayment');
+    $errormessage = get_string('error:capability_config', 'enrol_coursepayment');
+    throw new required_capability_exception($context, 'enrol/coursepayment:config', $errormessage, '');
 }
 
 // Set navbar.
@@ -86,7 +87,7 @@ switch ($action) {
                     '*', IGNORE_MULTIPLE);
                 if ($item) {
                     // This is bad we already have this code we need to throw a error.
-                    print_error('error:code_not_unique', 'enrol_coursepayment');
+                    throw new moodle_exception('error:code_not_unique', 'enrol_coursepayment');
                 }
 
                 $DB->insert_record('enrol_coursepayment_discount', $data);

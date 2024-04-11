@@ -19,7 +19,7 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package   coursepayment
+ * @package   enrol_coursepayment
  * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
@@ -35,20 +35,27 @@ use core_privacy\local\request\helper;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Class provider.
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2018 MFreak.nl
+ * @author    Luuk Verhoeven
+ **/
 class provider implements \core_privacy\local\metadata\provider,
     \core_privacy\local\request\core_userlist_provider,
     \core_privacy\local\request\plugin\provider {
 
     /**
-     * Returns meta data about this system.
+     * Returns metadata about this system.
      *
      * @param collection $collection The initialised collection to add items to.
      *
-     * @return  collection     A listing of user data stored through this system.
+     * @return collection     A listing of user data stored through this system.
      */
-    public static function get_metadata(collection $collection) : collection {
+    public static function get_metadata(collection $collection): collection {
         $collection->add_database_table(
             'enrol_coursepayment',
             [
@@ -72,7 +79,7 @@ class provider implements \core_privacy\local\metadata\provider,
      *
      * @return contextlist the list of contexts containing user info for the user.
      */
-    public static function get_contexts_for_userid(int $userid) : contextlist {
+    public static function get_contexts_for_userid(int $userid): contextlist {
         // Enrol has no context ... we work with enrol id instead.
         $sql = "SELECT enrol.id
                   FROM {enrol} enrol
@@ -94,10 +101,11 @@ class provider implements \core_privacy\local\metadata\provider,
      *
      * @param approved_contextlist $contextlist a list of contexts approved for export.
      *
+     * @return void
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public static function export_user_data(approved_contextlist $contextlist) : void {
+    public static function export_user_data(approved_contextlist $contextlist): void {
         global $DB;
         if (empty($contextlist->count())) {
             return;
@@ -137,7 +145,7 @@ class provider implements \core_privacy\local\metadata\provider,
             $contextdata = helper::get_context_data($context, $user);
 
             // Merge data and write it.
-            $contextdata = (object)array_merge((array)$contextdata, $data);
+            $contextdata = (object) array_merge((array) $contextdata, $data);
             writer::with_context($context)->export_data([], $contextdata);
         }
 
@@ -149,9 +157,10 @@ class provider implements \core_privacy\local\metadata\provider,
      *
      * @param \context $context the context to delete in.
      *
+     * @return void
      * @throws \dml_exception
      */
-    public static function delete_data_for_all_users_in_context(\context $context) : void {
+    public static function delete_data_for_all_users_in_context(\context $context): void {
         // Can't delete you administration.
     }
 
@@ -160,9 +169,10 @@ class provider implements \core_privacy\local\metadata\provider,
      *
      * @param approved_contextlist $contextlist a list of contexts approved for deletion.
      *
+     * @return void
      * @throws \dml_exception
      */
-    public static function delete_data_for_user(approved_contextlist $contextlist) : void {
+    public static function delete_data_for_user(approved_contextlist $contextlist): void {
         // Can't delete you administration.
     }
 
@@ -171,8 +181,10 @@ class provider implements \core_privacy\local\metadata\provider,
      *
      * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin
      *                           combination.
+     *
+     * @return void
      */
-    public static function get_users_in_context(userlist $userlist) {
+    public static function get_users_in_context(userlist $userlist): void {
         // Can't delete you administration.
     }
 
@@ -180,8 +192,11 @@ class provider implements \core_privacy\local\metadata\provider,
      * Delete multiple users within a single context.
      *
      * @param approved_userlist $userlist The approved context and user information to delete information for.
+     *
+     * @return void
      */
-    public static function delete_data_for_users(approved_userlist $userlist) {
+    public static function delete_data_for_users(approved_userlist $userlist): void {
         // Can't delete you administration.
     }
+
 }

@@ -25,14 +25,13 @@
  **/
 
 namespace enrol_coursepayment\output;
-defined('MOODLE_INTERNAL') || die;
 
 use plugin_renderer_base;
 
 /**
  * Class renderer
  *
- * @package   enrol_coursepayment\output
+ * @package   enrol_coursepayment
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
@@ -45,10 +44,10 @@ class renderer extends plugin_renderer_base {
      * @param string    $string
      * @param \stdClass $dummydata
      *
-     * @return bool|string
+     * @return string|boolean
      * @throws \moodle_exception
      */
-    public function render_template(string $string, \stdClass $dummydata) : string {
+    public function render_template(string $string, \stdClass $dummydata) {
         return $this->render_from_template($string, $dummydata);
     }
 
@@ -61,7 +60,7 @@ class renderer extends plugin_renderer_base {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    public function render_multi_account(multi_account $renderable) : string {
+    public function render_multi_account(multi_account $renderable) {
         $data = $renderable->export_for_template($this);
 
         return $this->render_from_template('enrol_coursepayment/multi_account_table', $data);

@@ -23,7 +23,6 @@
  * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  */
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * Class enrol_coursepayment_plugin
@@ -50,7 +49,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @return array of pix_icon
      * @throws coding_exception
      */
-    public function get_info_icons(array $instances) : array {
+    public function get_info_icons(array $instances): array {
         return [
             new pix_icon('icon', get_string('pluginname', 'enrol_coursepayment'),
                 'enrol_coursepayment'),
@@ -58,11 +57,11 @@ class enrol_coursepayment_plugin extends enrol_plugin {
     }
 
     /**
-     * users with role assign cap may tweak the roles later
+     * Users with role assign cap may tweak the roles later
      *
-     * @return false means anybody may tweak roles, it does not use itemid and component when assigning roles
+     * @return bool means anybody may tweak roles, it does not use itemid and component when assigning roles
      */
-    public function roles_protected() : bool {
+    public function roles_protected(): bool {
         return false;
     }
 
@@ -73,9 +72,9 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      *
      * @param stdClass $instance course enrol instance
      *
-     * @return true means it is possible to change enrol period and status in user_enrolments table
+     * @return bool means it is possible to change enrol period and status in user_enrolments table
      */
-    public function allow_unenrol(stdClass $instance) : bool {
+    public function allow_unenrol(stdClass $instance): bool {
         return true;
     }
 
@@ -86,18 +85,20 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      *
      * @param stdClass $instance course enrol instance
      *
-     * @return true means it is possible to change enrol period and status in user_enrolments table
+     * @return bool means it is possible to change enrol period and status in user_enrolments table
      */
-    public function allow_manage(stdClass $instance) : bool {
+    public function allow_manage(stdClass $instance): bool {
         return true;
     }
 
     /**
+     * Show enrolme link
+     *
      * @param stdClass $instance
      *
      * @return bool
      */
-    public function show_enrolme_link(stdClass $instance) : bool {
+    public function show_enrolme_link(stdClass $instance): bool {
         return ($instance->status == ENROL_INSTANCE_ENABLED);
     }
 
@@ -105,12 +106,13 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * Sets up navigation entries.
      *
      * @param navigation_node $instancesnode
-     * @param object|stdClass $instance
+     * @param stdClass $instance
      *
+     * @return void
      * @throws coding_exception
      * @throws moodle_exception
      */
-    public function add_course_navigation($instancesnode, stdClass $instance) : void {
+    public function add_course_navigation($instancesnode, stdClass $instance): void {
         global $PAGE, $COURSE;
         if ($instance->enrol !== 'coursepayment') {
             throw new coding_exception('Invalid enrol instance type!');
@@ -158,7 +160,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @throws coding_exception
      * @throws moodle_exception
      */
-    public function get_action_icons(stdClass $instance) : array {
+    public function get_action_icons(stdClass $instance): array {
         global $OUTPUT;
 
         if ($instance->enrol !== 'coursepayment') {
@@ -185,7 +187,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      *
      * @param int $courseid
      *
-     * @return moodle_url page url
+     * @return moodle_url|null page url
      * @throws coding_exception
      * @throws moodle_exception
      */
@@ -231,7 +233,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
             return ob_get_clean();
         }
 
-        $cost = (float)($instance->cost <= 0) ? $this->get_config('cost') : $instance->cost;
+        $cost = (float) ($instance->cost <= 0) ? $this->get_config('cost') : $instance->cost;
 
         if (abs($cost) < 0.01 || isguestuser()) {
             // No cost, other enrolment methods (instances) should be used.
@@ -277,14 +279,14 @@ class enrol_coursepayment_plugin extends enrol_plugin {
 
         // Currency to symbol.
         $locale = 'nl_NL';
-        $formatcurrency = new NumberFormatter($locale."@currency=$instance->currency", NumberFormatter::CURRENCY);
+        $formatcurrency = new NumberFormatter($locale . "@currency=$instance->currency", NumberFormatter::CURRENCY);
         $currsymbol = $formatcurrency->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
 
         // You can set a custom text to be shown instead of instance name.
         $name = !empty($instance->customtext1) ? $instance->customtext1 : $config->instancename;
         echo '<div align="center"><h3 class="coursepayment_instancename coursepaymentbox cpbtop m-0 pt-3">' . $name . '</h3>' .
             '<p class="coursepaymentbox cpbmiddle m-0"><b>' . get_string("cost") . ': ' . $currsymbol .
-            ' <span id="coursepayment_cost">' . $config->localisedcost . '</span>'.  ' </b></p></div>';
+            ' <span id="coursepayment_cost">' . $config->localisedcost . '</span>' . ' </b></p></div>';
 
         // Payment method is selected.
         if (!empty($gatewaymethod)) {
@@ -330,15 +332,16 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * Restore instance and map settings.
      *
      * @param restore_enrolments_structure_step $step
-     * @param stdClass                          $data
-     * @param stdClass                          $course
-     * @param int                               $oldid
+     * @param stdClass $data
+     * @param stdClass $course
+     * @param int $oldid
      *
+     * @return void
      * @throws coding_exception
      * @throws dml_exception
      * @throws restore_step_exception
      */
-    public function restore_instance(restore_enrolments_structure_step $step, stdClass $data, $course, $oldid) : void {
+    public function restore_instance(restore_enrolments_structure_step $step, stdClass $data, $course, $oldid): void {
         global $DB;
         if ($step->get_task()->get_target() == backup::TARGET_NEW_COURSE) {
             $merge = false;
@@ -351,11 +354,11 @@ class enrol_coursepayment_plugin extends enrol_plugin {
                 'currency' => $data->currency,
             ];
         }
-        if ($merge and $instances = $DB->get_records('enrol', $merge, 'id')) {
+        if ($merge && $instances = $DB->get_records('enrol', $merge, 'id')) {
             $instance = reset($instances);
             $instanceid = $instance->id;
         } else {
-            $instanceid = $this->add_instance($course, (array)$data);
+            $instanceid = $this->add_instance($course, (array) $data);
         }
         $step->set_mapping('enrol', $oldid, $instanceid);
     }
@@ -364,14 +367,16 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * Restore user enrolment.
      *
      * @param restore_enrolments_structure_step $step
-     * @param stdClass                          $data
-     * @param stdClass                          $instance
-     * @param int                               $oldinstancestatus
-     * @param int                               $userid
+     * @param stdClass $data
+     * @param stdClass $instance
+     * @param int $userid
+     * @param int $oldinstancestatus
      *
+     * @return void
      * @throws coding_exception
      */
-    public function restore_user_enrolment(restore_enrolments_structure_step $step, $data, $instance, $userid, $oldinstancestatus) : void {
+    public function restore_user_enrolment(restore_enrolments_structure_step $step, $data, $instance, $userid,
+        $oldinstancestatus): void {
         $this->enrol_user($instance, $userid, null, $data->timestart, $data->timeend, $data->status);
     }
 
@@ -379,13 +384,13 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * Gets an array of the user enrolment actions
      *
      * @param course_enrolment_manager $manager
-     * @param stdClass                 $ue A user enrolment object
+     * @param stdClass $ue A user enrolment object
      *
      * @return array An array of user_enrolment_actions
      * @throws coding_exception
      * @throws moodle_exception
      */
-    public function get_user_enrolment_actions(course_enrolment_manager $manager, $ue) : array {
+    public function get_user_enrolment_actions(course_enrolment_manager $manager, $ue): array {
         $actions = [];
         $context = $manager->get_context();
         $instance = $ue->enrolmentinstance;
@@ -416,7 +421,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      *
      * @return int exit code, 0 means ok
      */
-    public function sync(progress_trace $trace) : int {
+    public function sync(progress_trace $trace): int {
         $this->process_expirations($trace);
 
         return 0;
@@ -430,7 +435,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @return bool
      * @throws coding_exception
      */
-    public function can_delete_instance($instance) : bool {
+    public function can_delete_instance($instance): bool {
         $context = context_course::instance($instance->courseid);
 
         return has_capability('enrol/coursepayment:config', $context);
@@ -444,7 +449,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @return bool
      * @throws coding_exception
      */
-    public function can_hide_show_instance($instance) : bool {
+    public function can_hide_show_instance($instance): bool {
         $context = context_course::instance($instance->courseid);
 
         return has_capability('enrol/coursepayment:config', $context);
@@ -456,7 +461,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @return array
      * @throws coding_exception
      */
-    public function get_currencies() : array {
+    public function get_currencies(): array {
         $codes = ['EUR'];
         $currencies = [];
         foreach ($codes as $c) {
@@ -471,7 +476,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      *
      * @return array
      */
-    public function get_gateways() : array {
+    public function get_gateways(): array {
         return ['mollie' => 'Mollie'];
     }
 
@@ -484,7 +489,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      * @return array
      * @throws coding_exception
      */
-    public function order_valid($orderid = '', $gateway = '') : array {
+    public function order_valid($orderid = '', $gateway = ''): array {
         $return = [
             'status' => false,
             'message' => '',
@@ -507,12 +512,12 @@ class enrol_coursepayment_plugin extends enrol_plugin {
     }
 
     /**
-     * process orders with the cron if we missed a ipn call we can query the gateway API to check if something has a
-     * new status
+     * process orders with the cron if we missed an ipn call.
+     * We can query the gateway API to check if something has a new status
      *
      * @throws dml_exception
      */
-    public function cron_process_orders() : void {
+    public function cron_process_orders(): void {
         global $DB;
 
         mtrace(__CLASS__ . ' | ' . __FUNCTION__);
@@ -530,7 +535,7 @@ class enrol_coursepayment_plugin extends enrol_plugin {
                 $gateway = new $gateway();
                 $success = $gateway->validate_order($row->orderid);
 
-                mtrace($row->id . ' | ' . print_r($success , true));
+                mtrace($row->id . ' | ' . print_r($success, true)); // @codingStandardsIgnoreLine
             }
         } else {
             mtrace('No orders are waiting on a status update');
@@ -543,26 +548,27 @@ class enrol_coursepayment_plugin extends enrol_plugin {
      *
      * @return array
      */
-    public function get_vat_percentages() : array {
+    public function get_vat_percentages(): array {
         return range(0, 99);
     }
+
 }
 
 /**
  * Needed for serving files.
  *
- * @param        $course
- * @param        $cm
- * @param        $context
+ * @param object $course
+ * @param cm_info $cm
+ * @param context $context
  * @param string $filearea
- * @param array  $args
- * @param bool   $forcedownload
- * @param        $sendfileoptions
+ * @param array $args
+ * @param bool $forcedownload
+ * @param bool $sendfileoptions
  *
  * @return void may terminate if file not found or donotdie not specified
  * @throws moodle_exception
  */
-function enrol_coursepayment_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, $sendfileoptions) {
+function enrol_coursepayment_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, $sendfileoptions): void {
     global $CFG;
     require_once("$CFG->libdir/filelib.php");
 
@@ -594,7 +600,7 @@ function enrol_coursepayment_pluginfile($course, $cm, $context, $filearea, $args
  * @throws dml_exception
  * @throws moodle_exception
  */
-function enrol_coursepayment_output_fragment_editelement($args) {
+function enrol_coursepayment_output_fragment_editelement($args): string {
     global $DB;
 
     // Get the element.
@@ -610,7 +616,7 @@ function enrol_coursepayment_output_fragment_editelement($args) {
  * Handles editing the 'name' of the element in a list.
  *
  * @param string $itemtype
- * @param int    $itemid
+ * @param int $itemid
  * @param string $newvalue
  *
  * @return \core\output\inplace_editable

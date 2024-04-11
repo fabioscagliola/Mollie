@@ -20,18 +20,22 @@
     @author    Luuk Verhoeven
 }}
 {{!
-    @template enrol_coursepayment/invoice_info
+    @template enrol_coursepayment/element_invoiceinfo
 
-   Invoice information
+    Invoice information
 
     Example context (json):
     {
         "companyname" : "Avetica",
         "address" : "Some address",
         "zipcode" : "0000FG",
-        "place" : "Maasdam"
+        "place" : "Maasdam",
+        'kvk' : "12345678",
+        'btw' : "NL12345678",
+        'description' : "Some description"
     }
 }}
+
 <b>{{companyname}}</b><br/>
 {{address}}<br/>
 {{zipcode}} {{place}}<br/>

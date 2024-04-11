@@ -23,6 +23,7 @@
  * @copyright 2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
+
 require_once(__DIR__ . '/../../../config.php');
 defined('MOODLE_INTERNAL') || die();
 
@@ -69,4 +70,3 @@ switch ($action) {
 
         echo $OUTPUT->footer();
 }
-

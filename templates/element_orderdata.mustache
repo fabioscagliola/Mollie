@@ -21,7 +21,7 @@
 
 }}
 {{!
-    @template enrol_coursepayment/orderdata
+    @template enrol_coursepayment/element_orderdata
 
     Invoice orderdata
 
@@ -32,9 +32,11 @@
         "coursename" : "Name",
         "vat" : "21",
         "subtotal" : "10.01",
+        "vat_price" : "1.01",
         "total" : "10.01"
     }
 }}
+
 <table style="width:{{width}}px;color:{{color}};" cellpadding="5" cellspacing="2">
     <tr>
         <th style="font-weight: bold;text-align:left">{{# str}} orderdata:coursename, enrol_coursepayment {{/ str}}</th>

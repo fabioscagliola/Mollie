@@ -23,8 +23,10 @@
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  **/
+
 defined('MOODLE_INTERNAL') || die();
 
+global $ADMIN;
 ($ADMIN->fulltree) || die();
 if (!empty($config->multi_account)) {
 
@@ -41,7 +43,7 @@ if (!empty($config->multi_account)) {
     $settings->add(new admin_setting_heading('enrol_coursepayment_register', '',
         '<aside style="border: 1px solid red;padding: 3px">' . get_string('gateway_mollie_link',
             'enrol_coursepayment',
-            (object)['link' => 'https://www.mollie.com/en/signup/1787751']) . '</aside><hr/>'));
+            (object)['link' => 'https://my.mollie.com/dashboard/signup']) . '</aside><hr/>'));
 
     $settings->add(new admin_setting_configselect('enrol_coursepayment/gateway_mollie_enabled',
         get_string('enabled', 'enrol_coursepayment'),

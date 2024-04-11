@@ -19,15 +19,14 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @file      : messages.php
  * @since     4-3-2015
- * @encoding  : UTF8
  *
- * @package   : enrol_coursepayment
+ * @package   enrol_coursepayment
  *
  * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  **/
+
 defined('MOODLE_INTERNAL') || die();
 
 $messageproviders = [

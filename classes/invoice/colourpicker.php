@@ -17,7 +17,7 @@
 /**
  * This file contains the form element for handling the colour picker.
  *
- * @package    mod_customcert
+ * @package    enrol_coursepayment
  * @copyright  2013 Mark Nelson <markn@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,12 +29,13 @@ use renderer_base;
 
 defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
 
+global $CFG;
 require_once($CFG->dirroot . '/lib/form/editor.php');
 
 /**
  * Form element for handling the colour picker.
  *
- * @package    mod_customcert
+ * @package    enrol_coursepayment
  * @copyright  2013 Mark Nelson <markn@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -44,8 +45,10 @@ class colourpicker extends \moodlequickform_editor {
      * Sets the value of the form element
      *
      * @param string $value
+     *
+     * @return void
      */
-    public function setvalue($value) : void {
+    public function setvalue($value): void {
         $this->updateAttributes(['value' => $value]);
     }
 
@@ -54,7 +57,7 @@ class colourpicker extends \moodlequickform_editor {
      *
      * @return string
      */
-    public function getvalue() : string {
+    public function getvalue(): string {
         return $this->getAttribute('value');
     }
 
@@ -64,7 +67,7 @@ class colourpicker extends \moodlequickform_editor {
      * @return string
      * @throws \coding_exception
      */
-    public function tohtml() : string {
+    public function tohtml(): string {
         global $PAGE, $OUTPUT;
 
         $PAGE->requires->js_init_call('M.util.init_colour_picker', [$this->getAttribute('id'), null]);
@@ -92,10 +95,11 @@ class colourpicker extends \moodlequickform_editor {
      * @return array
      * @throws \coding_exception
      */
-    public function export_for_template(renderer_base $output) : array {
+    public function export_for_template(renderer_base $output): array {
         $context = $this->export_for_template_base($output);
         $context['html'] = $this->toHtml();
 
         return $context;
     }
+
 }

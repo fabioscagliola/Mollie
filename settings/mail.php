@@ -23,7 +23,10 @@
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  **/
+
 defined('MOODLE_INTERNAL') || die();
+
+global $ADMIN;
 ($ADMIN->fulltree) || die();
 
 $settings->add(new admin_setting_heading('enrol_coursepayment_welcomemail',

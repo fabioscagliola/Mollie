@@ -23,7 +23,11 @@
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  **/
+
 defined('MOODLE_INTERNAL') || die();
+
+global $ADMIN;
+
 ($ADMIN->fulltree) || die();
 
 $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/standalone_purchase_page',

@@ -23,9 +23,11 @@
  * @copyright 2015 MFreak.nl
  * @author    Luuk Verhoeven
  */
-defined('MOODLE_INTERNAL') || die;
+
 /**
- * @param $oldversion
+ * Execute during upgrade.
+ *
+ * @param int $oldversion
  *
  * @return bool
  * @throws ddl_exception
@@ -35,7 +37,7 @@ defined('MOODLE_INTERNAL') || die;
  * @throws upgrade_exception
  * @throws dml_exception
  */
-function xmldb_enrol_coursepayment_upgrade($oldversion) {
+function xmldb_enrol_coursepayment_upgrade(int $oldversion): bool {
     global $DB;
 
     $dbman = $DB->get_manager();

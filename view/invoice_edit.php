@@ -23,6 +23,7 @@
  * @copyright 26-10-2018 MFreak.nl
  * @author    Luuk Verhoeven
  **/
+
 require_once(__DIR__ . '/../../../config.php');
 defined('MOODLE_INTERNAL') || die;
 require_login();
@@ -30,7 +31,8 @@ require_login();
 $context = context_system::instance();
 
 if (!has_capability('enrol/coursepayment:config', $context)) {
-    print_error("error:capability_config", 'enrol_coursepayment');
+    $errormessage = get_string('error:capability_config', 'enrol_coursepayment');
+    throw new required_capability_exception($context, 'enrol/coursepayment:config', $errormessage, '');
 }
 $PAGE->navbar->add(get_string('pluginname', 'enrol_coursepayment'),
     new moodle_url('/admin/settings.php', ['section' => 'enrolsettingscoursepayment']));

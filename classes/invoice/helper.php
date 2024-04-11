@@ -25,18 +25,28 @@
  */
 
 namespace enrol_coursepayment\invoice;
-defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Class helper
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2018 MFreak.nl
+ * @author    Luuk Verhoeven
+ */
 final class helper {
 
     /**
      * Handles uploading an image for the customcert module.
      *
-     * @param int    $draftitemid the draft area containing the files
-     * @param int    $contextid   the context we are storing this image in
-     * @param string $filearea    indentifies the file area.
+     * @param int $draftitemid the draft area containing the files
+     * @param int $contextid   the context we are storing this image in
+     * @param string $filearea indentifies the file area.
+     *
+     * @return void
      */
-    public static function upload_files($draftitemid, $contextid, $filearea = 'image') : void {
+    public static function upload_files(int $draftitemid, int $contextid, string $filearea = 'image'): void {
         global $CFG;
 
         // Save the file if it exists that is currently in the draft area.
@@ -46,8 +56,10 @@ final class helper {
 
     /**
      * Return the list of possible fonts to use.
+     *
+     * @return array
      */
-    public static function get_fonts() : array {
+    public static function get_fonts(): array {
         global $CFG;
 
         require_once($CFG->libdir . '/pdflib.php');
@@ -94,8 +106,10 @@ final class helper {
 
     /**
      * Return the list of possible font sizes to use.
+     *
+     * @return array
      */
-    public static function get_font_sizes() : array {
+    public static function get_font_sizes(): array {
         // Array to store the sizes.
         $sizes = [];
 
@@ -105,4 +119,5 @@ final class helper {
 
         return $sizes;
     }
+
 }
