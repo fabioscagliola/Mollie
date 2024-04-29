@@ -263,4 +263,38 @@ class enrol_coursepayment_helper {
                 </div>';
     }
 
+    /**
+     * Moodle 4.4 forward the welcome to course text contains links <a> that need to be stripped.
+     * However, the strip_links function does not work as expected, as it has issues with the {$a} placeholders.
+     * This function does get them stripped.
+     *
+     * @param $string
+     *
+     * @return false|string
+     */
+    public static function strip_welcome_to_course_text($string) {
+        // Replace line breaks with a placeholder.
+        $string = str_replace(array("\r\n", "\r", "\n"), '<br />', $string);
+
+        $dom = new DOMDocument;
+        $dom->loadHTML($string, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+        $links = $dom->getElementsByTagName('a');
+
+        // Loop through all <a> tags in reverse order.
+        for ($i = $links->length - 1; $i >= 0; $i--) {
+            $link = $links->item($i);
+
+            // Replace the link with its text content.
+            $text = $dom->createTextNode($link->textContent);
+            $link->parentNode->replaceChild($text, $link);
+        }
+
+        $html = $dom->saveHTML();
+
+        // Restore line breaks.
+        return str_replace('<br />', "\n", $html);
+    }
+
+
 }

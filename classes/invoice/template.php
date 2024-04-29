@@ -473,13 +473,13 @@ class template {
      * Generate the PDF for the template.
      *
      * @param bool $preview  true if it is a preview, false otherwise
-     * @param int|null $user the user object
+     * @param object|null $user the user object
      * @param array $data
      * @param bool $return   Do we want to return the contents of the PDF?
      *
      * @return string|void Can return the PDF in string format if specified.
      */
-    public function generate_pdf(bool $preview = false, ?int $user = null, array $data = [], bool $return = false) {
+    public function generate_pdf(bool $preview = false, ?object $user = null, array $data = [], bool $return = false) {
         global $CFG, $DB, $USER;
         require_once($CFG->libdir . '/pdflib.php');
 

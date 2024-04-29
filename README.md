@@ -39,14 +39,17 @@ Has support for:
 ![Moodle4005](https://img.shields.io/badge/moodle-4.0.5-brightgreen.svg)
 ![Moodle41](https://img.shields.io/badge/moodle-4.1-brightgreen.svg)
 ![Moodle43](https://img.shields.io/badge/moodle-4.3-brightgreen.svg)
+![Moodle44](https://img.shields.io/badge/moodle-4.4-brightgreen.svg)
 
 ![PHP7.4](https://img.shields.io/badge/PHP-7.4-brightgreen.svg)
 ![PHP8.0](https://img.shields.io/badge/PHP-8.0-brightgreen.svg)
+![PHP8.1](https://img.shields.io/badge/PHP-8.0-brightgreen.svg)
 
 ### Changelog
 
 See Git for the complete history, major changes will be listed below.
 
+- 2024042900 - Moodle 4.4 support implemented.
 - 2024041100 - Moodle 4.3 support implemented.
 - 2022120300 - Moodle 4.1 support implemented.
 - 2022120200 - Moodle workplace 4.0.5 support implemented.
