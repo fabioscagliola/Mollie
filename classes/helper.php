@@ -268,7 +268,7 @@ class enrol_coursepayment_helper {
      * However, the strip_links function does not work as expected, as it has issues with the {$a} placeholders.
      * This function does get them stripped.
      *
-     * @param $string
+     * @param string $string
      *
      * @return false|string
      */
