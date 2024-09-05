@@ -30,7 +30,7 @@ require_login();
 $context = context_system::instance();
 
 if (!has_capability('enrol/coursepayment:config', $context)) {
-    print_error("error:capability_config", 'enrol_coursepayment');
+    throw new moodle_exception('error:capability_config', 'enrol_coursepayment');
 }
 $PAGE->navbar->add(get_string('pluginname', 'enrol_coursepayment'),
     new moodle_url('/admin/settings.php', ['section' => 'enrolsettingscoursepayment']));

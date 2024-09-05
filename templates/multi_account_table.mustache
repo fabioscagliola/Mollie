@@ -89,6 +89,7 @@
         {{#js}}
         require(['jquery'], function($) {
             $('[data-action="delete"]').click(function(e) {
+                // eslint-disable-next-line no-alert
                 let check = confirm('{{# str}} confirm_delete, enrol_coursepayment {{/ str}}');
                 if (!check) {
                     e.preventDefault();

@@ -25,10 +25,12 @@
  **/
 
 // These definitions should stay on top, before MOODLE_INTERNAL check.
+// @codingStandardsIgnoreStart
 if (!defined('AJAX_SCRIPT')) {
     define('AJAX_SCRIPT', true);
 }
 define('NO_DEBUG_DISPLAY', true);
+// @codingStandardsIgnoreEnd
 
 require('../../config.php');
 defined('MOODLE_INTERNAL') || die;

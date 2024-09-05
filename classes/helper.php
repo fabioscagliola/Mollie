@@ -274,7 +274,7 @@ class enrol_coursepayment_helper {
      */
     public static function strip_welcome_to_course_text($string) {
         // Replace line breaks with a placeholder.
-        $string = str_replace(array("\r\n", "\r", "\n"), '<br />', $string);
+        $string = str_replace(["\r\n", "\r", "\n"], '<br />', $string);
 
         $dom = new DOMDocument;
         $dom->loadHTML($string, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
@@ -295,6 +295,5 @@ class enrol_coursepayment_helper {
         // Restore line breaks.
         return str_replace('<br />', "\n", $html);
     }
-
 
 }
