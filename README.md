@@ -31,7 +31,7 @@ Has support for:
 ##### Requirements:
 
 * Requires at least: Moodle 3.9
-* Supports PHP: 7.4, 8.0
+* Supports PHP: 7.4, 8.0, 8.1
 
 ![Moodle39](https://img.shields.io/badge/moodle-3.9-brightgreen.svg)
 ![Moodle310](https://img.shields.io/badge/moodle-3.10-brightgreen.svg)
@@ -43,7 +43,7 @@ Has support for:
 
 ![PHP7.4](https://img.shields.io/badge/PHP-7.4-brightgreen.svg)
 ![PHP8.0](https://img.shields.io/badge/PHP-8.0-brightgreen.svg)
-![PHP8.1](https://img.shields.io/badge/PHP-8.0-brightgreen.svg)
+![PHP8.1](https://img.shields.io/badge/PHP-8.1-brightgreen.svg)
 
 ### Changelog
 
