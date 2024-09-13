@@ -40,6 +40,7 @@ Has support for:
 ![Moodle41](https://img.shields.io/badge/moodle-4.1-brightgreen.svg)
 ![Moodle43](https://img.shields.io/badge/moodle-4.3-brightgreen.svg)
 ![Moodle44](https://img.shields.io/badge/moodle-4.4-brightgreen.svg)
+![Moodle45](https://img.shields.io/badge/moodle-5.4-brightgreen.svg)
 
 ![PHP7.4](https://img.shields.io/badge/PHP-7.4-brightgreen.svg)
 ![PHP8.0](https://img.shields.io/badge/PHP-8.0-brightgreen.svg)
@@ -49,6 +50,7 @@ Has support for:
 
 See Git for the complete history, major changes will be listed below.
 
+- 2024091300 - Moodle 4.5 support implemented.
 - 2024042900 - Moodle 4.4 support implemented.
 - 2024041100 - Moodle 4.3 support implemented.
 - 2022120300 - Moodle 4.1 support implemented.
