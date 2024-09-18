@@ -393,3 +393,8 @@ $string['posx'] = 'X cordinate';
 $string['posx_help'] = 'You can use the reposition mode for this';
 $string['posy'] = 'Y cordinate';
 $string['posy_help'] = 'You can use the reposition mode for this';
+
+// Message providers.
+$string['messageprovider:coursepayment_enrolment'] = 'Enrolment message';
+$string['messageprovider:expiry_notification'] = 'Expiry message';
+$string['messageprovider:coursepayment_invoice'] = 'Invoice message';
