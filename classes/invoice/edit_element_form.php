@@ -17,7 +17,7 @@
 /**
  * This file contains the form for handling editing a coursepayment invoice element.
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -33,6 +33,7 @@ namespace enrol_coursepayment\invoice;
 
 defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
 
+global $CFG;
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once($CFG->dirroot . '/enrol/coursepayment/classes/invoice/colourpicker.php');
 
@@ -42,21 +43,26 @@ require_once($CFG->dirroot . '/enrol/coursepayment/classes/invoice/colourpicker.
 /**
  *  The form for handling editing a coursepayment invoice element.
  *
- * @package enrol_coursepayment\invoice
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2018 MFreak.nl
+ * @author    Luuk Verhoeven
  */
 class edit_element_form extends \moodleform {
 
     /**
      * @var element The element object.
      */
-    protected $element;
+    protected mixed $element;
 
     /**
      * Form definition.
      *
+     * @return void
      * @throws \coding_exception
      */
-    public function definition() {
+    public function definition(): void {
         $mform =& $this->_form;
 
         $mform->updateAttributes(['id' => 'editelementform']);
@@ -78,8 +84,10 @@ class edit_element_form extends \moodleform {
 
     /**
      * Fill in the current page data for this coursepayment invoice.
+     *
+     * @return void
      */
-    public function definition_after_data() {
+    public function definition_after_data(): void {
         $this->element->definition_after_data($this->_form);
     }
 
@@ -92,7 +100,7 @@ class edit_element_form extends \moodleform {
      * @return array the errors that were found
      * @throws \coding_exception
      */
-    public function validation($data, $files) {
+    public function validation($data, $files): array {
         $errors = [];
 
         if (\core_text::strlen($data['name']) > 255) {
@@ -103,4 +111,5 @@ class edit_element_form extends \moodleform {
 
         return $errors;
     }
+
 }

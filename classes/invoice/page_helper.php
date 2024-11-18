@@ -17,7 +17,7 @@
 /**
  * Provides useful functions related to setting up the page.
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -30,7 +30,6 @@
  */
 
 namespace enrol_coursepayment\invoice;
-defined('MOODLE_INTERNAL') || die;
 
 /**
  * Class helper.
@@ -47,13 +46,13 @@ class page_helper {
      * Sets up the page variables.
      *
      * @param \moodle_url $pageurl
-     * @param \context    $context
-     * @param string      $title the page title
+     * @param \context $context
+     * @param string $title the page title
      *
      * @throws \coding_exception
      * @throws \moodle_exception
      */
-    public static function page_setup($pageurl, $context, $title = '') : void {
+    public static function page_setup(\moodle_url $pageurl, \context $context, string $title = ''): void {
         global $COURSE, $PAGE, $SITE;
 
         $PAGE->set_url($pageurl);
@@ -61,7 +60,7 @@ class page_helper {
         $PAGE->set_title(format_string($title));
 
         // If we are in the system context then we are managing templates, and we want to show that in the navigation.
-        if ($context->contextlevel == CONTEXT_SYSTEM) {
+        if ($context->contextlevel === CONTEXT_SYSTEM) {
             $PAGE->set_pagelayout('admin');
             $PAGE->set_heading($SITE->fullname);
 
@@ -71,4 +70,5 @@ class page_helper {
             $PAGE->set_heading(format_string($COURSE->fullname));
         }
     }
+
 }

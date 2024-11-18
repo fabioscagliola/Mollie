@@ -17,7 +17,7 @@
 /**
  * This file contains the coursepayment element border's core interaction API.
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -30,8 +30,6 @@
  */
 
 namespace enrol_coursepayment\invoice\element\border;
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * The element border's core interaction API.
@@ -47,9 +45,10 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
      *
+     * @return void
      * @throws \coding_exception
      */
-    public function render_form_elements($mform) : void {
+    public function render_form_elements($mform): void {
         // We want to define the width of the border.
         $mform->addElement('text', 'width', get_string('width', 'enrol_coursepayment'), ['size' => 10]);
         $mform->setType('width', PARAM_INT);
@@ -62,12 +61,14 @@ class element extends \enrol_coursepayment\invoice\element {
     /**
      * Handles rendering the element on the pdf.
      *
-     * @param \pdf      $pdf     the pdf object
-     * @param bool      $preview true if it is a preview, false otherwise
-     * @param \stdClass $user    the user we are rendering this for
-     * @param array     $data
+     * @param \pdf $pdf       the pdf object
+     * @param bool $preview   true if it is a preview, false otherwise
+     * @param \stdClass $user the user we are rendering this for
+     * @param array $data
+     *
+     * @return void
      */
-    public function render($pdf, $preview, $user, array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []): void {
         $colour = \TCPDF_COLORS::convertHTMLColorToDec($this->get_colour(), $colour);
         $pdf->SetLineStyle(['width' => $this->get_data(), 'color' => $colour]);
         $pdf->Line(0, 0, $pdf->getPageWidth(), 0);
@@ -84,7 +85,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the html
      */
-    public function render_html() : string {
+    public function render_html(): string {
         return '';
     }
 
@@ -97,7 +98,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @return array the validation errors
      * @throws \coding_exception
      */
-    public function validate_form_elements($data, $files) : array {
+    public function validate_form_elements($data, $files): array {
         // Array to return the errors.
         $errors = [];
 
@@ -116,8 +117,10 @@ class element extends \enrol_coursepayment\invoice\element {
      * Sets the data on the form when editing an element.
      *
      * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
+     *
+     * @return void
      */
-    public function definition_after_data($mform) : void {
+    public function definition_after_data($mform): void {
         if (!empty($this->get_data())) {
             $element = $mform->getElement('width');
             $element->setValue($this->get_data());
@@ -133,7 +136,8 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the json encoded array
      */
-    public function save_unique_data($data) {
+    public function save_unique_data($data): string {
         return $data->width;
     }
+
 }

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- *
+ * Multi account
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -23,13 +23,14 @@
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  **/
+
 require_once(__DIR__ . '/../../../config.php');
 require_login();
 
 $context = context_system::instance();
 
 if (!has_capability('enrol/coursepayment:config', $context)) {
-    print_error("error:capability_config", 'enrol_coursepayment');
+    throw new moodle_exception('error:capability_config', 'enrol_coursepayment');
 }
 $PAGE->navbar->add(get_string('pluginname', 'enrol_coursepayment'),
     new moodle_url('/admin/settings.php', ['section' => 'enrolsettingscoursepayment']));

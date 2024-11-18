@@ -96,7 +96,7 @@ $string['gateway_mollie_select_method'] = 'Please click the method you like to u
 $string['gateway_mollie'] = 'Gateway: Mollie';
 $string['gateway_mollie_desc'] = 'Offer your customers the payment methods Creditcard, SOFORT Banking, iDEAL, Bancontact/Mister Cash, Bank transfer, Bitcoin, PayPal or paysafecard. Mollie is known for reliability, transparency, nice API’s and ready-to-go modules.';
 $string['gateway_mollie_apikey'] = 'API key';
-$string['gateway_mollie_link'] = 'If you don\'t have a account please <a href="{$a->link}">register</a>';
+$string['gateway_mollie_link'] = 'If you don\'t have a account please <a href="{$a->link}" target="_blank">register</a>';
 $string['gateway_mollie_send_button'] = 'Purchase with mollie';
 $string['error:capability_config'] = 'Error: You need the coursepayment/config capability!';
 $string['enrol_coursepayment_discount'] = 'Discount';
@@ -393,3 +393,8 @@ $string['posx'] = 'X cordinate';
 $string['posx_help'] = 'You can use the reposition mode for this';
 $string['posy'] = 'Y cordinate';
 $string['posy_help'] = 'You can use the reposition mode for this';
+
+// Message providers.
+$string['messageprovider:coursepayment_enrolment'] = 'Enrolment message';
+$string['messageprovider:expiry_notification'] = 'Expiry message';
+$string['messageprovider:coursepayment_invoice'] = 'Invoice message';

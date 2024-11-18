@@ -31,14 +31,24 @@ defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
 global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 
+/**
+ * Class discountcode
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2015 MFreak.nl
+ * @author    Luuk Verhoeven
+ */
 class discountcode extends \moodleform {
 
     /**
+     * Form definition
+     *
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    protected function definition() : void {
-
+    protected function definition(): void {
         global $DB;
 
         $mform = &$this->_form;
@@ -86,13 +96,15 @@ class discountcode extends \moodleform {
     }
 
     /**
+     * Form validation
+     *
      * @param array $data
      * @param array $files
      *
      * @return array
      * @throws \coding_exception
      */
-    public function validation($data, $files) : array {
+    public function validation($data, $files): array {
         $errors = parent::validation($data, $files);
         if (!empty($data['amount'])) {
             $amount = trim(str_replace(',', '.', $data['amount']));

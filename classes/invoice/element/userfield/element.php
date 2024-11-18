@@ -17,7 +17,7 @@
 /**
  * This file contains the coursepayment element  userfield's core interaction API.
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -30,8 +30,6 @@
  */
 
 namespace enrol_coursepayment\invoice\element\userfield;
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * The  element userfield's core interaction API.
@@ -49,27 +47,22 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @throws \coding_exception
      */
-    public function render_form_elements($mform) : void {
+    public function render_form_elements($mform): void {
 
         // Get the user profile fields.
         $userfields = [
-            'firstname' => get_user_field_name('firstname'),
-            'lastname' => get_user_field_name('lastname'),
-            'email' => get_user_field_name('email'),
-            'city' => get_user_field_name('city'),
-            'country' => get_user_field_name('country'),
-            'url' => get_user_field_name('url'),
-            'icq' => get_user_field_name('icq'),
-            'skype' => get_user_field_name('skype'),
-            'aim' => get_user_field_name('aim'),
-            'yahoo' => get_user_field_name('yahoo'),
-            'msn' => get_user_field_name('msn'),
-            'idnumber' => get_user_field_name('idnumber'),
-            'institution' => get_user_field_name('institution'),
-            'department' => get_user_field_name('department'),
-            'phone1' => get_user_field_name('phone1'),
-            'phone2' => get_user_field_name('phone2'),
-            'address' => get_user_field_name('address'),
+            'firstname' => \core_user\fields::get_display_name('firstname'),
+            'lastname' => \core_user\fields::get_display_name('lastname'),
+            'email' => \core_user\fields::get_display_name('email'),
+            'city' => \core_user\fields::get_display_name('city'),
+            'country' => \core_user\fields::get_display_name('country'),
+            'url' => \core_user\fields::get_display_name('url'),
+            'idnumber' => \core_user\fields::get_display_name('idnumber'),
+            'institution' => \core_user\fields::get_display_name('institution'),
+            'department' => \core_user\fields::get_display_name('department'),
+            'phone1' => \core_user\fields::get_display_name('phone1'),
+            'phone2' => \core_user\fields::get_display_name('phone2'),
+            'address' => \core_user\fields::get_display_name('address'),
         ];
         // Get the user custom fields.
         $arrcustomfields = \availability_profile\condition::get_custom_profile_fields();
@@ -97,20 +90,22 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the text
      */
-    public function save_unique_data($data) {
+    public function save_unique_data($data): string {
         return $data->userfield;
     }
 
     /**
      * Handles rendering the element on the pdf.
      *
-     * @param \pdf      $pdf     the pdf object
-     * @param bool      $preview true if it is a preview, false otherwise
-     * @param \stdClass $user    the user we are rendering this for
+     * @param \pdf $pdf       the pdf object
+     * @param bool $preview   true if it is a preview, false otherwise
+     * @param \stdClass $user the user we are rendering this for
+     * @param array $data
      *
+     * @return void
      * @throws \dml_exception
      */
-    public function render($pdf, $preview, $user, array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []): void {
         global $CFG, $DB;
 
         // The user field to display.
@@ -141,8 +136,10 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * This function is used to render the element when we are using the
      * drag and drop interface to position it.
+     *
+     * @return string
      */
-    public function render_html() : string {
+    public function render_html(): string {
         global $CFG, $DB, $USER;
 
         // The user field to display.
@@ -178,12 +175,15 @@ class element extends \enrol_coursepayment\invoice\element {
      * Sets the data on the form when editing an element.
      *
      * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
+     *
+     * @return void
      */
-    public function definition_after_data($mform) : void {
+    public function definition_after_data($mform): void {
         if (!empty($this->get_data())) {
             $element = $mform->getElement('userfield');
             $element->setValue($this->get_data());
         }
         parent::definition_after_data($mform);
     }
+
 }

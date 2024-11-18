@@ -23,6 +23,7 @@
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  **/
+
 require_once(__DIR__ . '/../../../config.php');
 defined('MOODLE_INTERNAL') || die();
 require_login();
@@ -39,7 +40,7 @@ $PAGE->set_url('/enrol/coursepayment/view/purchase.php', [
 ]);
 
 if (enrol_coursepayment_helper::requires_mollie_connect()) {
-    print_error('error:mollie_connect_requires', 'enrol_coursepayment');
+    throw new moodle_exception('error:mollie_connect_requires', 'enrol_coursepayment');
 }
 
 $context = context_system::instance();
@@ -67,7 +68,7 @@ if ($instance->enrolenddate != 0 && $instance->enrolenddate < time()) {
     redirect(new moodle_url('/'));
 }
 
-$cost = (float)($instance->cost <= 0) ? $this->get_config('cost') : $instance->cost;
+$cost = (float) ($instance->cost <= 0) ? $this->get_config('cost') : $instance->cost;
 
 if (abs($cost) < 0.01 || isguestuser()) {
     // No cost, other enrolment methods (instances) should be used.

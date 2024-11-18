@@ -28,9 +28,23 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/formslib.php');
 
+/**
+ * Class enrol_cousrepayment_edit_form
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2015 MFreak.nl
+ * @author    Luuk Verhoeven
+ **/
 class enrol_coursepayment_edit_form extends moodleform {
 
-    public function definition() {
+    /**
+     * Form definition.
+     *
+     * @return void
+     */
+    public function definition(): void {
         $mform = $this->_form;
 
         [$instance, $plugin, $context] = $this->_customdata;
@@ -127,11 +141,19 @@ class enrol_coursepayment_edit_form extends moodleform {
         $this->set_data($instance);
     }
 
-    public function validation($data, $files) {
+    /**
+     * Form validation
+     *
+     * @param array $data
+     * @param array $files
+     *
+     * @return array
+     */
+    public function validation($data, $files): array {
 
         $errors = parent::validation($data, $files);
 
-        if (!empty($data['enrolenddate']) and $data['enrolenddate'] < $data['enrolstartdate']) {
+        if (!empty($data['enrolenddate']) && $data['enrolenddate'] < $data['enrolstartdate']) {
             $errors['enrolenddate'] = get_string('enrolenddaterror', 'enrol_coursepayment');
         }
 
@@ -140,10 +162,11 @@ class enrol_coursepayment_edit_form extends moodleform {
             $errors['cost'] = get_string('costerror', 'enrol_coursepayment');
         }
 
-        if ($data['expirynotify'] > 0 and $data['expirythreshold'] < 86400) {
+        if ($data['expirynotify'] > 0 && $data['expirythreshold'] < 86400) {
             $errors['expirythreshold'] = get_string('errorthresholdlow', 'core_enrol');
         }
 
         return $errors;
     }
+
 }

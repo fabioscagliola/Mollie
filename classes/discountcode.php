@@ -24,8 +24,6 @@
  * @author    Luuk Verhoeven
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Class enrol_coursepayment_discountcode
  *
@@ -42,26 +40,26 @@ class enrol_coursepayment_discountcode {
      *
      * @var int
      */
-    protected $courseid = 0;
+    protected int $courseid = 0;
 
     /**
      * The discountcode
      *
      * @var string
      */
-    protected $discountcode = '';
+    protected string $discountcode = '';
 
     /**
      * last error container
      *
      * @var string
      */
-    protected $lasterror = '';
+    protected string $lasterror = '';
 
     /**
      * discountcode record container
      *
-     * @var bool
+     * @var object|bool
      */
     protected $record = false;
 
@@ -69,13 +67,13 @@ class enrol_coursepayment_discountcode {
      * __construct with discountcode and courseid
      *
      * @param string $discount
-     * @param int    $courseid
+     * @param int $courseid
      */
     public function __construct($discount = '', $courseid = 0) {
 
-        // Make sure not surrounded by white spaces or tabs if copy pasted
+        // Make sure not surrounded by white spaces or tabs if copy pasted.
         $this->discountcode = trim($discount);
-        $this->courseid = (int)$courseid;
+        $this->courseid = (int) $courseid;
 
     }
 
@@ -101,7 +99,7 @@ class enrol_coursepayment_discountcode {
             return false;
         }
 
-        if (!$row || $row->start_time > $now || $now > $row->end_time) {
+        if ($row->start_time > $now || $now > $row->end_time) {
             $this->lasterror = 'not_within_the_time_period';
 
             return false;
@@ -122,10 +120,10 @@ class enrol_coursepayment_discountcode {
     /**
      * last error message
      *
-     * @return lang_string|string
+     * @return string
      * @throws coding_exception
      */
-    public function get_last_error() : string {
+    public function get_last_error(): string {
         return (!empty($this->lasterror)) ? get_string('error:' . $this->lasterror, 'enrol_coursepayment') : '';
     }
 

@@ -17,7 +17,7 @@
 /**
  * element_factory
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -31,10 +31,14 @@
 
 namespace enrol_coursepayment\invoice;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The factory class responsible for creating custom invoice instances.
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2018 MFreak.nl
+ * @author    Luuk Verhoeven
  */
 class element_factory {
 
@@ -44,7 +48,7 @@ class element_factory {
      * @param \stdClass $element the element
      *
      * @return element|bool returns the instance of the element class, or false if element
-     *         class does not exists.
+     *         class does not exist.
      * @throws \coding_exception
      */
     public static function get_element_instance($element) {
@@ -73,4 +77,5 @@ class element_factory {
 
         return false;
     }
+
 }

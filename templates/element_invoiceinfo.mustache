@@ -20,31 +20,35 @@
     @author    Luuk Verhoeven
 }}
 {{!
-    @template enrol_coursepayment/invoice_info
+    @template enrol_coursepayment/element_invoiceinfo
 
-   Invoice information
+    Invoice information
 
     Example context (json):
     {
-        "companyname" : "Avetica",
-        "address" : "Some address",
-        "zipcode" : "0000FG",
-        "place" : "Maasdam"
+        "companyname": "Avetica",
+        "address": "Some address",
+        "zipcode": "0000FG",
+        "place": "Maasdam",
+        "kvk": "12345678",
+        "btw": "NL12345678",
+        "description": "Some description"
     }
 }}
-<b>{{companyname}}</b><br/>
-{{address}}<br/>
-{{zipcode}} {{place}}<br/>
-<br/>
+
+<b>{{companyname}}</b><br>
+{{address}}<br>
+{{zipcode}} {{place}}<br>
+<br>
 {{#kvk}}
-    {{# str}} invoiceinfo:kvk, enrol_coursepayment {{/ str}}: {{kvk}}<br/>
+    {{# str}} invoiceinfo:kvk, enrol_coursepayment {{/ str}}: {{kvk}}<br>
 {{/kvk}}
 {{#btw}}
-    {{# str}} invoiceinfo:vat, enrol_coursepayment {{/ str}}: {{btw}}<br/>
+    {{# str}} invoiceinfo:vat, enrol_coursepayment {{/ str}}: {{btw}}<br>
 {{/btw}}
-<br/>
-{{# str}} invoiceinfo:invoice_number, enrol_coursepayment {{/ str}}: {{invoice_number}}<br/>
-{{# str}} invoiceinfo:date, enrol_coursepayment {{/ str}}: {{date}}<br/>
+<br>
+{{# str}} invoiceinfo:invoice_number, enrol_coursepayment {{/ str}}: {{invoice_number}}<br>
+{{# str}} invoiceinfo:date, enrol_coursepayment {{/ str}}: {{date}}<br>
 {{#description}}
-    {{# str}} invoiceinfo:ref, enrol_coursepayment {{/ str}}.: {{description}}<br/>
+    {{# str}} invoiceinfo:ref, enrol_coursepayment {{/ str}}.: {{description}}<br>
 {{/description}}

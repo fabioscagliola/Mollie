@@ -17,7 +17,7 @@
 /**
  * Template helper class
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -33,6 +33,7 @@ namespace enrol_coursepayment\invoice;
 
 defined('MOODLE_INTERNAL') || die;
 
+global $CFG;
 require_once($CFG->libdir . '/grade/constants.php');
 require_once($CFG->dirroot . '/grade/lib.php');
 require_once($CFG->dirroot . '/grade/querylib.php');
@@ -60,11 +61,13 @@ class element_helper {
     /**
      * Common behaviour for rendering specified content on the pdf.
      *
-     * @param \pdf    $pdf     the pdf object
+     * @param \pdf $pdf        the pdf object
      * @param element $element the coursepayment invoice element
-     * @param string  $content the content to render
+     * @param string $content  the content to render
+     *
+     * @return void
      */
-    public static function render_content($pdf, $element, $content) : void {
+    public static function render_content($pdf, $element, $content): void {
         [$font, $attr] = self::get_font($element);
         $pdf->setFont($font, $attr, $element->get_fontsize());
         $fontcolour = \TCPDF_COLORS::convertHTMLColorToDec($element->get_colour(), $fontcolour);
@@ -76,7 +79,7 @@ class element_helper {
         $refpoint = $element->get_refpoint();
         $actualwidth = $pdf->GetStringWidth($content);
 
-        if ($w and $w < $actualwidth) {
+        if ($w && $w < $actualwidth) {
             $actualwidth = $w;
         }
 
@@ -112,11 +115,11 @@ class element_helper {
      * Common behaviour for rendering specified content on the drag and drop page.
      *
      * @param element $element the customcert element
-     * @param string  $content the content to render
+     * @param string $content  the content to render
      *
      * @return string the html
      */
-    public static function render_html_content($element, $content) : string {
+    public static function render_html_content(element $element, string $content): string {
         [$font, $attr] = self::get_font($element);
         $fontstyle = 'font-family: ' . $font;
         if (strpos($attr, 'B') !== false) {
@@ -141,7 +144,7 @@ class element_helper {
      *
      * @throws \coding_exception
      */
-    public static function render_form_element_font($mform) {
+    public static function render_form_element_font($mform): void {
         $mform->addElement('select', 'font', get_string('font', 'enrol_coursepayment'), helper::get_fonts());
         $mform->setType('font', PARAM_TEXT);
         $mform->setDefault('font', 'times');
@@ -160,7 +163,7 @@ class element_helper {
      *
      * @throws \coding_exception
      */
-    public static function render_form_element_colour($mform) {
+    public static function render_form_element_colour($mform): void {
         $mform->addElement('coursepayment_colourpicker', 'colour', get_string('fontcolour', 'enrol_coursepayment'));
         $mform->setType('colour', PARAM_RAW); // Need to validate that this is a valid colour.
         $mform->setDefault('colour', '#000000');
@@ -174,7 +177,7 @@ class element_helper {
      *
      * @throws \coding_exception
      */
-    public static function render_form_element_position($mform) {
+    public static function render_form_element_position($mform): void {
         $mform->addElement('text', 'posx', get_string('posx', 'enrol_coursepayment'), ['size' => 10]);
         $mform->setType('posx', PARAM_INT);
         $mform->setDefault('posx', 0);
@@ -192,7 +195,7 @@ class element_helper {
      *
      * @throws \coding_exception
      */
-    public static function render_form_element_width($mform) {
+    public static function render_form_element_width($mform): void {
         $mform->addElement('text', 'width', get_string('elementwidth', 'enrol_coursepayment'), ['size' => 10]);
         $mform->setType('width', PARAM_INT);
         $mform->setDefault('width', 0);
@@ -215,7 +218,7 @@ class element_helper {
      * @return array the validation errors
      * @throws \coding_exception
      */
-    public static function validate_form_element_colour($data) {
+    public static function validate_form_element_colour(array $data): array {
         $errors = [];
         // Validate the colour.
         if (!self::validate_colour($data['colour'])) {
@@ -233,7 +236,7 @@ class element_helper {
      * @return array the validation errors
      * @throws \coding_exception
      */
-    public static function validate_form_element_position($data) {
+    public static function validate_form_element_position(array $data): array {
         $errors = [];
 
         // Check if posx is not set, or not numeric or less than 0.
@@ -256,7 +259,7 @@ class element_helper {
      * @return array the validation errors
      * @throws \coding_exception
      */
-    public static function validate_form_element_width($data) {
+    public static function validate_form_element_width(array $data): array {
         $errors = [];
 
         // Check if width is less than 0.
@@ -274,7 +277,7 @@ class element_helper {
      *
      * @return array the font and font attributes
      */
-    public static function get_font($element) {
+    public static function get_font(element $element): array {
         // Variable for the font.
         $font = $element->get_font();
         // Get the last two characters of the font name.
@@ -310,7 +313,7 @@ class element_helper {
      *
      * @return bool returns true if the colour is valid, false otherwise
      */
-    public static function validate_colour($colour) {
+    public static function validate_colour($colour): bool {
         // List of valid HTML colour names.
         $colournames = [
             'aliceblue',
@@ -480,7 +483,7 @@ class element_helper {
      * @return int the element number
      * @throws \dml_exception
      */
-    public static function get_element_sequence($pageid) {
+    public static function get_element_sequence(int $pageid): int {
         global $DB;
 
         // Set the sequence of the element we are creating.
@@ -503,7 +506,7 @@ class element_helper {
      * @return array the list of element types that can be used.
      * @throws \coding_exception
      */
-    public static function get_available_element_types() {
+    public static function get_available_element_types(): array {
         global $CFG;
 
         // Array to store the element types.

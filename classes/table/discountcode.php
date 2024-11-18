@@ -26,12 +26,14 @@
 
 namespace enrol_coursepayment\table;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
- * Simple subclass of {@link table_sql} that provides
- * some custom formatters for various columns, in order
- * to make the main outstations list nicer
+ * Class discountcode
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2015 MFreak.nl
+ * @author    Luuk Verhoeven
  */
 class discountcode extends \table_sql {
 
@@ -40,7 +42,7 @@ class discountcode extends \table_sql {
      *
      * @var array
      */
-    protected $courses = [];
+    protected array $courses = [];
 
     /**
      * __constructor
@@ -63,13 +65,13 @@ class discountcode extends \table_sql {
     /**
      * Render output for row action
      *
-     * @param $row
+     * @param object  $row
      *
      * @return string
      * @throws \coding_exception
      * @throws \moodle_exception
      */
-    protected function col_action($row) {
+    protected function col_action(object $row): string {
 
         $delete = new \moodle_url('/enrol/coursepayment/view/discountcode.php', [
             'id' => $row->id,
@@ -88,12 +90,12 @@ class discountcode extends \table_sql {
     /**
      * Render output for row courseid
      *
-     * @param $row
+     * @param object $row
      *
      * @return string
      * @throws \coding_exception
      */
-    protected function col_courseid($row) {
+    protected function col_courseid(object $row): string {
         return !empty($this->courses[$row->courseid]) ? $this->courses[$row->courseid] :
             get_string('form:allcourses', 'enrol_coursepayment');
     }
@@ -101,29 +103,34 @@ class discountcode extends \table_sql {
     /**
      * Render output for row start_time
      *
-     * @param $row
+     * @param object $row
      *
      * @return bool|string
      */
-    protected function col_start_time($row) {
+    protected function col_start_time(object $row) {
         return date('d-m-Y', $row->start_time);
     }
 
     /**
-     * @param $row
+     * End time
+     *
+     * @param object $row
      *
      * @return bool|string
      */
-    protected function col_end_time($row) {
+    protected function col_end_time(object $row) {
         return date('d-m-Y', $row->end_time);
     }
 
     /**
-     * @param $row
+     * Amount
+     *
+     * @param object $row
      *
      * @return string
      */
-    protected function col_amount($row) {
+    protected function col_amount(object $row): string {
         return ($row->percentage > 0) ? $row->percentage . ' %' : $row->amount;
     }
+
 }

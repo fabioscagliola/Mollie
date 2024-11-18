@@ -24,13 +24,22 @@
 {{!
     @template enrol_coursepayment/multi_account_table
 
-   Multi-account table
+    Multi-account table
 
     Example context (json):
     {
-
+        "data" : {
+            "name" : "name",
+            "is_default" : false,
+            "profile_value" : "value",
+            "id" : "1",
+            "subtotal" : "10.01",
+            "vat_price" : "1.01",
+            "total" : "10.01"
+        }
     }
 }}
+
 <div id="coursepayment-multi-account">
     <a class="btn btn-primary" href="/enrol/coursepayment/view/multi_account.php?id={{id}}&action=new">
     {{# str}} btn:new, enrol_coursepayment {{/ str}}
@@ -80,6 +89,7 @@
         {{#js}}
         require(['jquery'], function($) {
             $('[data-action="delete"]').click(function(e) {
+                // eslint-disable-next-line no-alert
                 let check = confirm('{{# str}} confirm_delete, enrol_coursepayment {{/ str}}');
                 if (!check) {
                     e.preventDefault();

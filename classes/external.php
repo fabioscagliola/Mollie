@@ -17,7 +17,7 @@
 /**
  * This is the external API for this tool.
  *
- * This parts is copied from "enrol_coursepayment" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "enrol_coursepayment" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -38,6 +38,7 @@ use external_value;
 
 defined('MOODLE_INTERNAL') || die;
 
+global $CFG;
 require_once("$CFG->libdir/externallib.php");
 
 /**
@@ -53,7 +54,7 @@ class external extends \external_api {
      *
      * @return external_function_parameters
      */
-    public static function save_element_parameters() : external_function_parameters {
+    public static function save_element_parameters(): external_function_parameters {
         return new external_function_parameters(
             [
                 'templateid' => new external_value(PARAM_INT, 'The template id'),
@@ -73,9 +74,9 @@ class external extends \external_api {
     /**
      * Handles saving element data.
      *
-     * @param int   $templateid The template id.
-     * @param int   $elementid  The element id.
-     * @param array $values     The values to save
+     * @param int $templateid The template id.
+     * @param int $elementid  The element id.
+     * @param array $values   The values to save
      *
      * @return bool
      * @throws \coding_exception
@@ -84,7 +85,7 @@ class external extends \external_api {
      * @throws \required_capability_exception
      * @throws \restricted_context_exception
      */
-    public static function save_element($templateid, $elementid, $values) : bool {
+    public static function save_element(int $templateid, int $elementid, array $values): bool {
         global $DB;
 
         $params = [
@@ -117,7 +118,7 @@ class external extends \external_api {
 
         // Get an instance of the element class.
         if ($e = element_factory::get_element_instance($element)) {
-            return (bool)$e->save_form_elements($data);
+            return (bool) $e->save_form_elements($data);
         }
 
         return false;
@@ -128,7 +129,7 @@ class external extends \external_api {
      *
      * @return external_value
      */
-    public static function save_element_returns() : external_value {
+    public static function save_element_returns(): external_value {
         return new external_value(PARAM_BOOL, 'True if successful, false otherwise');
     }
 
@@ -137,7 +138,7 @@ class external extends \external_api {
      *
      * @return external_function_parameters
      */
-    public static function get_element_html_parameters() : external_function_parameters {
+    public static function get_element_html_parameters(): external_function_parameters {
         return new external_function_parameters(
             [
                 'templateid' => new external_value(PARAM_INT, 'The template id'),
@@ -158,7 +159,7 @@ class external extends \external_api {
      * @throws \restricted_context_exception
      * @throws \coding_exception
      */
-    public static function get_element_html($templateid, $elementid) : string {
+    public static function get_element_html(int $templateid, int $elementid): string {
         global $DB;
 
         $params = [
@@ -184,7 +185,7 @@ class external extends \external_api {
      *
      * @return external_value
      */
-    public static function get_element_html_returns() : external_value {
+    public static function get_element_html_returns(): external_value {
         return new external_value(PARAM_RAW, 'The HTML');
     }
 

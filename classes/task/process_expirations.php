@@ -26,8 +26,6 @@
 
 namespace enrol_coursepayment\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Process expirations task.
  *
@@ -45,14 +43,16 @@ class process_expirations extends \core\task\scheduled_task {
      * @return string
      * @throws \coding_exception
      */
-    public function get_name() : string {
+    public function get_name(): string {
         return get_string('processexpirationstask', 'enrol_coursepayment');
     }
 
     /**
      * Run task for processing expirations.
+     *
+     * @return void
      */
-    public function execute() : void {
+    public function execute(): void {
         $enrol = enrol_get_plugin('coursepayment');
 
         $trace = new \text_progress_trace();

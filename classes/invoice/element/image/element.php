@@ -17,7 +17,7 @@
 /**
  * This file contains the coursepayment element image's core interaction API.
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -31,8 +31,6 @@
 
 namespace enrol_coursepayment\invoice\element\image;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The element image's core interaction API.
  *
@@ -45,7 +43,7 @@ class element extends \enrol_coursepayment\invoice\element {
     /**
      * @var array The file manager options.
      */
-    protected $filemanageroptions = [];
+    protected array $filemanageroptions = [];
 
     /**
      * Constructor.
@@ -69,10 +67,11 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
      *
+     * @return void
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function render_form_elements($mform) : void {
+    public function render_form_elements($mform): void {
         $mform->addElement('select', 'fileid', get_string('image', 'enrol_coursepayment'), self::get_images());
 
         $mform->addElement('text', 'width', get_string('width', 'enrol_coursepayment'), ['size' => 10]);
@@ -103,7 +102,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function validate_form_elements($data, $files) : array {
+    public function validate_form_elements($data, $files): array {
         // Array to return the errors.
         $errors = [];
 
@@ -134,7 +133,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @return bool true of success, false otherwise.
      * @throws \dml_exception
      */
-    public function save_form_elements($data) {
+    public function save_form_elements($data): bool {
         global $COURSE, $SITE;
 
         // Set the context.
@@ -158,10 +157,10 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the json encoded array
      */
-    public function save_unique_data($data) {
+    public function save_unique_data($data): string {
         $arrtostore = [
-            'width' => !empty($data->width) ? (int)$data->width : 0,
-            'height' => !empty($data->height) ? (int)$data->height : 0,
+            'width' => !empty($data->width) ? (int) $data->width : 0,
+            'height' => !empty($data->height) ? (int) $data->height : 0,
         ];
 
         if (!empty($data->fileid)) {
@@ -184,11 +183,14 @@ class element extends \enrol_coursepayment\invoice\element {
     /**
      * Handles rendering the element on the pdf.
      *
-     * @param \pdf      $pdf     the pdf object
-     * @param bool      $preview true if it is a preview, false otherwise
-     * @param \stdClass $user    the user we are rendering this for
+     * @param \pdf $pdf       the pdf object
+     * @param bool $preview   true if it is a preview, false otherwise
+     * @param \stdClass $user the user we are rendering this for
+     * @param array $data
+     *
+     * @return void
      */
-    public function render($pdf, $preview, $user, array $data = []) {
+    public function render($pdf, $preview, $user, array $data = []): void {
         // If there is no element data, we have nothing to display.
         if (empty($this->get_data())) {
             return;
@@ -222,7 +224,7 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @return string the html
      */
-    public function render_html() : string {
+    public function render_html(): string {
         // If there is no element data, we have nothing to display.
         if (empty($this->get_data())) {
             return '';
@@ -263,6 +265,8 @@ class element extends \enrol_coursepayment\invoice\element {
 
             return \html_writer::tag('img', '', ['src' => $url, 'style' => $style]);
         }
+
+        return '';
     }
 
     /**
@@ -270,9 +274,10 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @param \enrol_coursepayment\invoice\edit_element_form $mform the edit_form instance
      *
+     * @return void
      * @throws \dml_exception
      */
-    public function definition_after_data($mform) : void {
+    public function definition_after_data($mform): void {
         global $COURSE, $SITE;
 
         // Set the image, width and height for this element.
@@ -319,9 +324,10 @@ class element extends \enrol_coursepayment\invoice\element {
      *
      * @param \restore_coursepayment_activity_task $restore
      *
+     * @return void
      * @throws \dml_exception
      */
-    public function after_restore($restore) {
+    public function after_restore($restore): void {
         global $DB;
 
         // Get the current data we have stored for this element.
@@ -358,7 +364,7 @@ class element extends \enrol_coursepayment\invoice\element {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public static function get_images() {
+    public static function get_images(): array {
         global $COURSE;
 
         // Create file storage object.
@@ -386,4 +392,5 @@ class element extends \enrol_coursepayment\invoice\element {
 
         return $arrfiles;
     }
+
 }

@@ -19,10 +19,11 @@
  *
  * Used for sorting of already requested parsed data and that is not available in mysql
  *
- * @version 0.1
  * @author  coderkk Cudnik <coderkk@gmail.com>
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
- * @package utility.sort
+ * @package enrol_coursepayment
+ *
+ * @copyright 2018 MFreak.nl
  */
 
 namespace enrol_coursepayment\table;
@@ -31,9 +32,22 @@ defined('MOODLE_INTERNAL') || die;
 /**
  * Class arraysortutil
  *
+ * @author  coderkk Cudnik <coderkk@gmail.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
  * @package enrol_coursepayment
+ *
+ * @copyright 2018 MFreak.nl
  */
 class arraysortutil {
+
+    /**
+     * UA sort
+     *
+     * @param mixed $unsort
+     * @param mixed $fields
+     *
+     * @return mixed
+     */
     public static function uasort($unsort, $fields) {
         if (!is_array($unsort) || count($unsort) <= 0) {
             return $unsort;
@@ -43,6 +57,14 @@ class arraysortutil {
         return $sorted;
     }
 
+    /**
+     * Multi sort
+     *
+     * @param mixed $unsort
+     * @param mixed $fields
+     *
+     * @return mixed
+     */
     public static function multisort($unsort, $fields) {
         if (!is_array($unsort) || count($unsort) <= 0) {
             return $unsort;
@@ -51,14 +73,26 @@ class arraysortutil {
 
         return $sorted;
     }
+
 }
 
 /**
  * Class multisortengine
  *
+ * @author  coderkk Cudnik <coderkk@gmail.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
  * @package enrol_coursepayment
  */
 class multisortengine {
+
+    /**
+     * Multi sort
+     *
+     * @param mixed $unsort
+     * @param mixed $fields
+     *
+     * @return mixed
+     */
     public static function multisort($unsort, $fields) {
         $sorted = $unsort;
         if (is_array($unsort)) {
@@ -100,24 +134,43 @@ class multisortengine {
 
         return $sorted;
     }
+
 }
 
 /**
  * Class uasortengine
  *
+ * @author  coderkk Cudnik <coderkk@gmail.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
  * @package enrol_coursepayment
  */
 class uasortengine {
-    static private $caseensitve = false;
-    static private $sortfields = [];
-    static private $sortorder = true;
-    static private $nature = false;
+
+    /**
+     * @var bool $caseensitve
+     */
+    static private bool $caseensitve = false;
+
+    /**
+     * @var array $sortfields
+     */
+    static private array $sortfields = [];
+
+    /**
+     * @var bool $sortorder
+     */
+    static private bool $sortorder = true;
+
+    /**
+     * @var bool $nature
+     */
+    static private bool $nature = false;
 
     /**
      * uasort_callback
      *
-     * @param $a
-     * @param $b
+     * @param array $a
+     * @param array $b
      *
      * @return int|\lt
      */
@@ -156,8 +209,8 @@ class uasortengine {
     /**
      * uasort
      *
-     * @param $unsort
-     * @param $fields
+     * @param mixed $unsort
+     * @param mixed $fields
      *
      * @return mixed
      */
@@ -168,4 +221,5 @@ class uasortengine {
 
         return $sorted;
     }
+
 }

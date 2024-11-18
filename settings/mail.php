@@ -23,7 +23,10 @@
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  **/
+
 defined('MOODLE_INTERNAL') || die();
+
+global $ADMIN;
 ($ADMIN->fulltree) || die();
 
 $settings->add(new admin_setting_heading('enrol_coursepayment_welcomemail',
@@ -31,7 +34,11 @@ $settings->add(new admin_setting_heading('enrol_coursepayment_welcomemail',
 
 $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailstudents',
     get_string('mailstudents', 'enrol_coursepayment'),
-    get_string('welcometocoursetext', ''), 0));
+    enrol_coursepayment_helper::strip_welcome_to_course_text(
+        get_string('welcometocoursetext', '')
+    ),
+    0),
+);
 
 $settings->add(new admin_setting_configcheckbox('enrol_coursepayment/mailteachers',
     get_string('mailteachers', 'enrol_coursepayment'),

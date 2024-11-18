@@ -19,13 +19,12 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @package   coursepayment
+ * @package   enrol_coursepayment
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  **/
 
 namespace enrol_coursepayment\output;
-defined('MOODLE_INTERNAL') || die;
 
 use renderable;
 use renderer_base;
@@ -35,19 +34,23 @@ use templatable;
 /**
  * Class multi_account
  *
- * @package enrol_coursepayment\output
- */
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2017 MFreak.nl
+ * @author    Luuk Verhoeven
+ **/
 class multi_account implements renderable, templatable {
 
     /**
-     * Export this data so it can be used as the context for a mustache template.
+     * Export this data, so it can be used as the context for a mustache template.
      *
      * @param renderer_base $output
      *
      * @return stdClass
      * @throws \dml_exception
      */
-    public function export_for_template(renderer_base $output) : stdClass {
+    public function export_for_template(renderer_base $output): stdClass {
         global $DB;
         $multiaccounts = $DB->get_records('coursepayment_multiaccount');
 
@@ -56,4 +59,5 @@ class multi_account implements renderable, templatable {
 
         return $object;
     }
+
 }

@@ -17,20 +17,21 @@
  * AMD module used when rearranging a custom certificate.
  *
  * @module     enrol_coursepayment/rearrange-area
- * @package    enrol_coursepayment
  * @copyright  2016 Mark Nelson <markn@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', 'core/notification',
-        'core/str', 'core/templates', 'core/ajax'],
-    function($, Y, fragment, Dialogue, notification, str, template, ajax) {
+        'core/str', 'core/templates', 'core/ajax', 'core/log'],
+    function ($, Y, fragment, Dialogue, notification, str, template, ajax, Log) {
+
+        Log.debug('Rearrange area: Initialising');
 
         /**
          * RearrangeArea class.
          *
          * @param {String} selector The rearrange PDF selector
          */
-        let RearrangeArea = function(selector) {
+        let RearrangeArea = function (selector) {
             this._node = $(selector);
             this._setEvents();
         };
@@ -40,20 +41,22 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
         RearrangeArea.prototype.COURSEPAYMENT_REF_POINT_TOPRIGHT = 2;
         RearrangeArea.prototype.PIXELSINMM = 3.779527559055;
 
-        RearrangeArea.prototype._setEvents = function() {
+        RearrangeArea.prototype._setEvents = function () {
             this._node.on('click', '.element', this._editElement.bind(this));
         };
 
-        RearrangeArea.prototype._editElement = function(event) {
+        RearrangeArea.prototype._editElement = function (event) {
             let elementid = event.currentTarget.id.substr(8);
             let contextid = this._node.attr('data-contextid');
             let params = {
                 'elementid': elementid
             };
 
-            fragment.loadFragment('enrol_coursepayment', 'editelement', contextid, params).done(function(html, js) {
-                str.get_string('editelement', 'enrol_coursepayment').done(function(title) {
-                    Y.use('moodle-core-formchangechecker', function() {
+            fragment.loadFragment('enrol_coursepayment', 'editelement', contextid, params).done(function (html, js) {
+                str.get_string('editelement', 'enrol_coursepayment').done(function (title) {
+                    // TODO: moodle-core-formchangechecker is being depricated Moodle 4.0+.
+                    // TODO: mod_customcert (where this is copied from) still has this in their 4.3 dev branch though.
+                    Y.use('moodle-core-formchangechecker', function () {
                         new Dialogue(
                             title,
                             '<div id=\'elementcontent\'></div>',
@@ -66,7 +69,7 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
             }.bind(this)).fail(notification.exception);
         };
 
-        RearrangeArea.prototype._editElementDialogueConfig = function(elementid, html, js, popup) {
+        RearrangeArea.prototype._editElementDialogueConfig = function (elementid, html, js, popup) {
             // Place the content in the dialogue.
             template.replaceNode('#elementcontent', html, js);
 
@@ -76,13 +79,13 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
 
             // Add events for when we save, close and cancel the page.
             let body = $(popup.getContent());
-            body.on('click', '#id_submitbutton', function(e) {
+            body.on('click', '#id_submitbutton', function (e) {
                 // Do not want to ask the user if they wish to stay on page after saving.
                 M.core_formchangechecker.reset_form_dirty_state();
                 // Save the data.
-                this._saveElement(elementid).then(function() {
+                this._saveElement(elementid).then(function () {
                     // Update the DOM to reflect the adjusted value.
-                    this._getElementHTML(elementid).done(function(html) {
+                    this._getElementHTML(elementid).done(function (html) {
                         let elementNode = this._node.find('#element-' + elementid);
                         let refpoint = parseInt($('#id_refpoint').val());
                         let refpointClass = '';
@@ -109,13 +112,13 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
                 e.preventDefault();
             }.bind(this));
 
-            body.on('click', '#id_cancel', function(e) {
+            body.on('click', '#id_cancel', function (e) {
                 popup.close();
                 e.preventDefault();
             });
         };
 
-        RearrangeArea.prototype._setPosition = function(elementid, refpoint, posx, posy) {
+        RearrangeArea.prototype._setPosition = function (elementid, refpoint, posx, posy) {
             let element = Y.one('#element-' + elementid);
 
             posx = Y.one('#pdf').getX() + posx * this.PIXELSINMM;
@@ -140,7 +143,7 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
             element.setY(posy);
         };
 
-        RearrangeArea.prototype._setPositionInForm = function(elementid) {
+        RearrangeArea.prototype._setPositionInForm = function (elementid) {
             let posxelement = $('#editelementform #id_posx');
             let posyelement = $('#editelementform #id_posy');
 
@@ -168,7 +171,7 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
             }
         };
 
-        RearrangeArea.prototype._getElementHTML = function(elementid) {
+        RearrangeArea.prototype._getElementHTML = function (elementid) {
             // Get the variables we need.
             let templateid = this._node.attr('data-templateid');
 
@@ -185,7 +188,7 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
             return promises[0];
         };
 
-        RearrangeArea.prototype._saveElement = function(elementid) {
+        RearrangeArea.prototype._saveElement = function (elementid) {
             // Get the variables we need.
             let templateid = this._node.attr('data-templateid');
             let inputs = $('#editelementform').serializeArray();
@@ -205,7 +208,7 @@ define(['jquery', 'core/yui', 'core/fragment', 'enrol_coursepayment/dialogue', '
         };
 
         return {
-            init: function(selector) {
+            init: function (selector) {
                 new RearrangeArea(selector);
             }
         };

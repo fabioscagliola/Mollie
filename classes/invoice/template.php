@@ -17,7 +17,7 @@
 /**
  * Template class
  *
- * This parts is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
+ * this part is copied from "mod_customcert" - Mark Nelson <markn@moodle.com>
  * Thanks for allowing us to use it.
  *
  * This file is modified not compatible with the original.
@@ -34,8 +34,6 @@ namespace enrol_coursepayment\invoice;
 use context_system;
 use enrol_coursepayment_helper;
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * Class represents a coursepayment invoice template.
  */
@@ -44,24 +42,24 @@ class template {
     /**
      * @var int $id The id of the template.
      */
-    protected $id;
+    protected int $id;
 
     /**
      * @var string $name The name of this template
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @var int $contextid The context id of this template
      */
-    protected $contextid;
+    protected int $contextid;
 
     /**
      * The constructor.
      *
      * @param \stdClass $template
      */
-    public function __construct($template) {
+    public function __construct(\stdClass $template) {
         $this->id = $template->id;
         $this->name = $template->name;
         $this->contextid = $template->contextid;
@@ -73,7 +71,7 @@ class template {
      * @param \stdClass $coursepayment
      * @param \stdClass $user
      * @param \stdClass $pluginconfig
-     * @param           $a
+     * @param mixed $a
      *
      * @return \stored_file
      * @throws \coding_exception
@@ -81,7 +79,7 @@ class template {
      * @throws \file_exception
      * @throws \stored_file_creation_exception
      */
-    public static function render(\stdClass $coursepayment, \stdClass $user, \stdClass $pluginconfig, $a) : \stored_file {
+    public static function render(\stdClass $coursepayment, \stdClass $user, \stdClass $pluginconfig, $a): \stored_file {
         global $DB;
         ob_clean();
 
@@ -103,7 +101,7 @@ class template {
         // Cleanup previous builds.
         $fs->delete_area_files($systemcontext->id, 'enrol_coursepayment', 'invoice', $coursepayment->id);
 
-        return $fs->create_file_from_string((object)[
+        return $fs->create_file_from_string((object) [
             'contextid' => $systemcontext->id,
             'component' => 'enrol_coursepayment',
             'filearea' => 'invoice',
@@ -124,7 +122,7 @@ class template {
      * @return int
      * @throws \dml_exception
      */
-    public static function get_template_name(\stdClass $pluginconfig, \stdClass $user) : int {
+    public static function get_template_name(\stdClass $pluginconfig, \stdClass $user): int {
         global $DB;
         $profilevalue = '';
 
@@ -166,7 +164,7 @@ class template {
      *
      * @throws \dml_exception
      */
-    public static function install_default_template(int $name = 0) : void {
+    public static function install_default_template(int $name = 0): void {
         global $DB;
 
         // Todo shouldn't be run multiple times, better add a record exists.
@@ -271,7 +269,7 @@ class template {
 
         // Adding the default elements.
         foreach ($elements as $element) {
-            $DB->insert_record('coursepayment_elements', (object)$element);
+            $DB->insert_record('coursepayment_elements', (object) $element);
         }
     }
 
@@ -280,9 +278,10 @@ class template {
      *
      * @param \stdClass $data the template data
      *
+     * @return void
      * @throws \dml_exception
      */
-    public function save(\stdClass $data) {
+    public function save(\stdClass $data): void {
         global $DB;
 
         $savedata = new \stdClass();
@@ -297,7 +296,7 @@ class template {
      * @return int the id of the page
      * @throws \dml_exception
      */
-    public function add_page() : int {
+    public function add_page(): int {
         global $DB;
 
         // Set the page number to 1 to begin with.
@@ -330,7 +329,7 @@ class template {
      *
      * @throws \dml_exception
      */
-    public function save_page($data) : void {
+    public function save_page(\stdClass $data): void {
         global $DB;
 
         // Set the time to a variable.
@@ -366,7 +365,7 @@ class template {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function delete() : bool {
+    public function delete(): bool {
         global $DB;
 
         // Delete the elements.
@@ -408,7 +407,7 @@ class template {
      * @throws \dml_exception
      * @throws \coding_exception
      */
-    public function delete_page($pageid) : void {
+    public function delete_page(int $pageid): void {
         global $DB;
 
         // Get the page.
@@ -447,7 +446,7 @@ class template {
      * @throws \dml_exception
      * @throws \coding_exception
      */
-    public function delete_element($elementid) : void {
+    public function delete_element(int $elementid): void {
         global $DB;
 
         // Ensure element exists and delete it.
@@ -473,23 +472,20 @@ class template {
     /**
      * Generate the PDF for the template.
      *
-     * @param bool  $preview true if it is a preview, false otherwise
-     * @param int   $user    the user object
+     * @param bool $preview  true if it is a preview, false otherwise
+     * @param object|null $user the user object
      * @param array $data
-     * @param bool  $return  Do we want to return the contents of the PDF?
+     * @param bool $return   Do we want to return the contents of the PDF?
      *
      * @return string|void Can return the PDF in string format if specified.
-     * @throws \coding_exception
-     * @throws \dml_exception
      */
-    public function generate_pdf($preview = false, $user = null, array $data = [], $return = false) {
+    public function generate_pdf(bool $preview = false, ?object $user = null, array $data = [], bool $return = false) {
         global $CFG, $DB, $USER;
+        require_once($CFG->libdir . '/pdflib.php');
 
         if (empty($user)) {
             $user = $USER;
         }
-
-        require_once($CFG->libdir . '/pdflib.php');
 
         // Get the pages for the template, there should always be at least one page for each template.
         if ($pages = $DB->get_records('coursepayment_pages', ['templateid' => $this->id], 'sequence ASC')) {
@@ -537,10 +533,11 @@ class template {
      *
      * @param int $copytotemplateid The template id to copy to
      *
+     * @return void
      * @throws \dml_exception
      * @throws \coding_exception
      */
-    public function copy_to_template($copytotemplateid) : void {
+    public function copy_to_template($copytotemplateid): void {
         global $DB;
 
         // Get the pages for the template, there should always be at least one page for each template.
@@ -579,12 +576,13 @@ class template {
      * Handles moving an item on a template.
      *
      * @param string $itemname  the item we are moving
-     * @param int    $itemid    the id of the item
+     * @param int $itemid       the id of the item
      * @param string $direction the direction
      *
+     * @return void
      * @throws \dml_exception
      */
-    public function move_item($itemname, $itemid, $direction) : void {
+    public function move_item(string $itemname, int $itemid, string $direction): void {
         global $DB;
 
         $table = 'coursepayment_';
@@ -624,7 +622,7 @@ class template {
      *
      * @return int the id of the template
      */
-    public function get_id() : int {
+    public function get_id(): int {
         return $this->id;
     }
 
@@ -633,7 +631,7 @@ class template {
      *
      * @return string the name of the template
      */
-    public function get_name() : string {
+    public function get_name(): string {
         return $this->name;
     }
 
@@ -642,7 +640,7 @@ class template {
      *
      * @return int the context id
      */
-    public function get_contextid() : int {
+    public function get_contextid(): int {
         return $this->contextid;
     }
 
@@ -652,7 +650,7 @@ class template {
      * @return \context the context
      * @throws \coding_exception
      */
-    public function get_context() : \context {
+    public function get_context(): \context {
         return \context::instance_by_id($this->contextid);
     }
 
@@ -662,7 +660,7 @@ class template {
      * @return \context_module|null the context module, null if there is none
      * @throws \coding_exception
      */
-    public function get_cm() : ?\context_module {
+    public function get_cm(): ?\context_module {
         $context = $this->get_context();
         if ($context->contextlevel === CONTEXT_MODULE) {
             return get_coursemodule_from_id('enrol_coursepayment', $context->instanceid, 0, false, MUST_EXIST);
@@ -677,7 +675,7 @@ class template {
      * @throws \required_capability_exception if the user does not have the necessary capabilities (ie. Fred)
      * @throws \coding_exception
      */
-    public function require_manage() : void {
+    public function require_manage(): void {
         require_capability('enrol/coursepayment:manage', $this->get_context());
     }
 
@@ -685,12 +683,12 @@ class template {
      * Creates a template.
      *
      * @param string $templatename the name of the template
-     * @param int    $contextid    the context id
+     * @param int $contextid       the context id
      *
      * @return template
      * @throws \dml_exception
      */
-    public static function create($templatename, $contextid) : template {
+    public static function create(string $templatename, int $contextid): template {
         global $DB;
 
         $template = new \stdClass();
@@ -702,4 +700,5 @@ class template {
 
         return new self($template);
     }
+
 }

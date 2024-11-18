@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Discount code form
+ * Multi account form
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -31,12 +31,23 @@ defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
 global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 
+/**
+ * Class multiaccount
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @package   enrol_coursepayment
+ * @copyright 2015 MFreak.nl
+ * @author    Luuk Verhoeven
+ */
 class multiaccount extends \moodleform {
 
     /**
+     * Form definition
+     *
      * @throws \coding_exception
      */
-    protected function definition() : void {
+    protected function definition(): void {
 
         $mform = &$this->_form;
 

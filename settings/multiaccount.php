@@ -23,7 +23,10 @@
  * @copyright 2017 MFreak.nl
  * @author    Luuk Verhoeven
  **/
+
 defined('MOODLE_INTERNAL') || die();
+
+global $ADMIN;
 ($ADMIN->fulltree) || die();
 
 if (!empty($config->multi_account)) {

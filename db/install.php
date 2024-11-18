@@ -24,12 +24,12 @@
  * @author    Luuk Verhoeven
  **/
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
+ * Execute during install.
+ *
  * @throws dml_exception
  */
-function xmldb_enrol_coursepayment_install() {
+function xmldb_enrol_coursepayment_install(): void {
     global $DB;
 
     // Requires Mollie connect for new installations.
