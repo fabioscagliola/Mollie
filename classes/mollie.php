@@ -86,13 +86,12 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * Add new activity order from a user.
      *
      * @param string $method
-     * @param string $issuer
      * @param string $discountcode
      *
      * @return array
      * @throws moodle_exception
      */
-    public function new_order_activity($method = '', $issuer = '', $discountcode = ''): array {
+    public function new_order_activity($method = '', $discountcode = ''): array {
         global $CFG, $DB;
 
         // Extra order data.
@@ -154,7 +153,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                     "userid" => $this->instanceconfig->userid,
                     "userfullname" => $this->instanceconfig->userfullname,
                 ],
-                "issuer" => !empty($issuer) ? $issuer : null,
+                "issuer" => null,
             ];
             $payment = $this->client->payments->create($request);
 
@@ -179,7 +178,6 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * add new order from a user
      *
      * @param string $method
-     * @param string $issuer
      * @param string $discountcode
      *
      * @return array
@@ -187,7 +185,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      * @throws dml_exception
      * @throws moodle_exception
      */
-    public function new_order_course($method = '', $issuer = '', $discountcode = ''): array {
+    public function new_order_course($method = '', $discountcode = ''): array {
 
         global $CFG, $DB;
 
@@ -220,8 +218,6 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             if ($order['cost'] == 0) {
                 redirect($CFG->wwwroot . '/enrol/coursepayment/return.php?orderid=' . $order['orderid'] . '&gateway=' .
                     $this->name . '&instanceid=' . $this->instanceconfig->instanceid);
-
-                return [];
             }
 
             $invoicenumber = $this->get_new_invoice_number();
@@ -248,7 +244,7 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
                     "userid" => $this->instanceconfig->userid,
                     "userfullname" => $this->instanceconfig->userfullname,
                 ],
-                "issuer" => !empty($issuer) ? $issuer : null,
+                "issuer" => null,
             ];
 
             // Mollie documentation: https://docs.mollie.com/reference/v2/payments-api/create-payment# .
@@ -306,27 +302,21 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             $itemtype = 'activity';
         }
 
-        $issuer = optional_param('issuer', false, PARAM_ALPHANUMEXT);
         $discountcode = optional_param('discountcode', false, PARAM_ALPHANUMEXT);
         $status = [];
 
         // Method is selected by the user.
-        if (!empty($method) || !empty($issuer)) {
-            // Allow empty method.
-            $method = !empty($issuer) ? 'ideal' : $method;
-
+        if (!empty($method)) {
             switch ($itemtype) {
                 case 'activity':
-                    $status = $this->new_order_activity($method, $issuer, $discountcode);
+                    $status = $this->new_order_activity($method, $discountcode);
                     break;
 
                 default:
-                    $status = $this->new_order_course($method, $issuer, $discountcode);
+                    $status = $this->new_order_course($method, $discountcode);
             }
 
-            if (isset($status['status']) && $status['status'] == false) {
-                // We show the same form again.
-            } else {
+            if (!(isset($status['status']) && $status['status'])) {
                 return '';
             }
         }
@@ -628,21 +618,6 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
             $string .= '<td><b>' . htmlspecialchars($method->description) . '</b></td>';
             $string .= '<td><img src="' . htmlspecialchars($method->image->size1x) . '"></td>';
             $string .= '</tr>';
-
-            if ($method->id == PaymentMethod::IDEAL) {
-
-                $string .= '<tr id="issuers_ideal" class="skip">
-                                    <td>
-                                    <select name="issuer">
-                                        <option value="">' . get_string('gateway_mollie_issuers', 'enrol_coursepayment') .
-                    '</option>';
-
-                foreach ($method->issuers as $issuer) {
-                    $string .= '<option value=' . htmlspecialchars($issuer->id) . '>' . htmlspecialchars($issuer->name) .
-                        '</option>';
-                }
-                $string .= '</select></td><td>&nbsp;</td></tr>';
-            }
             $i++;
         }
 
@@ -701,24 +676,6 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
 				<button type="submit" class="grid-button-' . $method->id . '" name="method" value="' . $method->id . '">
 					' . htmlspecialchars($method->description) . '
 				</button>';
-
-            if ($method->id == PaymentMethod::IDEAL) {
-                $string .= '<div id="ideal-issuers" class="hide">
-                                <h1>' . get_string('gateway_mollie_ideal_heading', 'enrol_coursepayment') . '</h1>
-                                <ul  class="buttons-grid ">';
-
-                foreach ($method->issuers as $issuer) {
-                    $string .= '<li>
-                                        <button type="submit" class="grid-button" name="issuer" value="' .
-                        htmlspecialchars($issuer->id) . '">
-                                            <img src="' . $issuer->image->svg . '" alt=""/><br>
-                                            ' . htmlspecialchars($issuer->name) . '
-                                        </button>
-                                    </li>';
-                }
-                $string .= '</ul>
-                            </div>';
-            }
             $i++;
 
             $string .= '</li>';

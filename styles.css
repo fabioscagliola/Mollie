@@ -14,10 +14,6 @@
     border-bottom: 1px solid lightgray;
 }
 
-#issuers_ideal {
-    background: #e6e6e6;
-}
-
 #coursepayment_agreement_checkbox input[type="checkbox"] {
     vertical-align: middle;
 }

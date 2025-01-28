@@ -45,7 +45,7 @@ class tabs extends \admin_setting {
     /**
      * @var mixed $selected The currently selected tab.
      */
-    protected $selected;
+    protected mixed $selected;
 
     /**
      * @var string $section The section name.
@@ -75,7 +75,7 @@ class tabs extends \admin_setting {
      *
      * @return mixed The id of the currently selected tab.
      */
-    public function get_setting() {
+    public function get_setting(): mixed {
         return $this->selected;
     }
 
