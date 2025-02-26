@@ -3,15 +3,11 @@
 namespace Mollie\Api\Resources;
 
 use Mollie\Api\Exceptions\ApiException;
-use Mollie\Api\MollieApiClient;
 use Mollie\Api\Types\OrderStatus;
 
 class Order extends BaseResource
 {
-    /**
-     * @var string
-     */
-    public $resource;
+    use HasPresetOptions;
 
     /**
      * Id of the order.
@@ -86,7 +82,7 @@ class Order extends BaseResource
     public $orderNumber;
 
     /**
-     * The person and the address the order is billed to.
+     * The person and the address the order is shipped to.
      *
      * @var \stdClass
      */
@@ -135,6 +131,13 @@ class Order extends BaseResource
      * @var string
      */
     public $redirectUrl;
+
+    /**
+     * Cancel URL set on this payment
+     *
+     * @var string
+     */
+    public $cancelUrl;
 
     /**
      * UTC datetime the order was created in ISO-8601 format.
@@ -198,6 +201,15 @@ class Order extends BaseResource
      * @var array|object[]
      */
     public $lines;
+
+    /**
+     * For digital goods, you must make sure to apply the VAT rate from your customer’s country in most jurisdictions.
+     * Use this parameter to restrict the payment methods available to your customer to methods from the billing country
+     * only.
+     *
+     * @var bool
+     */
+    public $shopperCountryMustMatchBillingCountry;
 
     /**
      * An object with several URL objects relevant to the customer. Every URL object will contain an href and a type field.
@@ -463,18 +475,7 @@ class Order extends BaseResource
      */
     public function refunds()
     {
-        if (! isset($this->_links->refunds->href)) {
-            return new RefundCollection($this->client, 0, null);
-        }
-
-        $result = $this->client->performHttpCallToFullUrl(MollieApiClient::HTTP_GET, $this->_links->refunds->href);
-
-        return ResourceFactory::createCursorResourceCollection(
-            $this->client,
-            $result->_embedded->refunds,
-            Refund::class,
-            $result->_links
-        );
+        return $this->client->orderRefunds->pageFor($this);
     }
 
     /**
@@ -490,6 +491,7 @@ class Order extends BaseResource
             "shippingAddress" => $this->shippingAddress,
             "orderNumber" => $this->orderNumber,
             "redirectUrl" => $this->redirectUrl,
+            "cancelUrl" => $this->cancelUrl,
             "webhookUrl" => $this->webhookUrl,
         ];
 
@@ -528,31 +530,5 @@ class Order extends BaseResource
             $this->_embedded->payments,
             Payment::class
         );
-    }
-
-    /**
-     * When accessed by oAuth we want to pass the testmode by default
-     *
-     * @return array
-     */
-    private function getPresetOptions()
-    {
-        $options = [];
-        if ($this->client->usesOAuth()) {
-            $options["testmode"] = $this->mode === "test" ? true : false;
-        }
-
-        return $options;
-    }
-
-    /**
-     * Apply the preset options.
-     *
-     * @param array $options
-     * @return array
-     */
-    private function withPresetOptions(array $options)
-    {
-        return array_merge($this->getPresetOptions(), $options);
     }
 }

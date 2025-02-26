@@ -67,7 +67,7 @@ M.enrol_coursepayment_mollie_standalone = {
     init: function(Y, ajaxurl, sesskey, courseid) {
         M.enrol_coursepayment_mollie_standalone.log('Load: M.enrol_coursepayment_mollie_standalone v3.10');
 
-        // Set config
+        // Set config.
         this.config.courseid = courseid;
         this.config.ajaxurl = ajaxurl;
         this.config.sesskey = sesskey;
@@ -89,21 +89,6 @@ M.enrol_coursepayment_mollie_standalone = {
         if (Y.one('#coursepayment_agreement')) {
             this.validate_agreement();
         }
-
-        // Show iDeal issuers options.
-        Y.all('.grid-button-ideal').on("click", function(e) {
-            e.preventDefault();
-            M.enrol_coursepayment_mollie_standalone.log('.grid-button-ideal');
-
-            Y.all('#methods > ul > li').hide();
-            Y.one('#methods > h1').hide();
-
-            var item = Y.one('#ideal-issuers');
-            var clone = item.cloneNode(true);
-            clone.removeClass('hide');
-            Y.one('#methods').append(clone);
-            item.remove();
-        });
     },
     /**
      * Validate agreement checkbox on form submit.
@@ -118,9 +103,6 @@ M.enrol_coursepayment_mollie_standalone = {
             if (!Y.one('#coursepayment_agreement').get('checked')) {
                 e.preventDefault();
             }
-            //
-            // // Debugging.
-            // e.preventDefault();
         });
     },
 
@@ -154,8 +136,8 @@ M.enrol_coursepayment_mollie_standalone = {
                         } else if (response.status == true) {
                             Y.one('#error_coursepayment').setHTML('');
                             Y.one('#discountcode').setStyle('border', '1px solid green');
-                            // Update
 
+                            // Update.
                             if (response.amount > 0) {
                                 newprice = parseFloat(costorignal) - response.amount;
                                 if (newprice < 0) {
@@ -172,7 +154,6 @@ M.enrol_coursepayment_mollie_standalone = {
                         }
                         M.enrol_coursepayment_mollie_standalone.log(response);
                     } catch (e) {
-                        // exception
                         M.enrol_coursepayment_mollie_standalone.log(e);
                     }
                 },

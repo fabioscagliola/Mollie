@@ -17,6 +17,7 @@ Has support for:
 * A global sandbox and debug switches.
 * After successful transaction user will be enrolled.
 * Multiple Mollie accounts support, account selection based on matching profile field value.
+* Supports iDeal 2.0
 
 ### Installation
 
@@ -50,6 +51,7 @@ Has support for:
 
 See Git for the complete history, major changes will be listed below.
 
+- 2025012800 - iDeal 2.0 support implemented, Mollie PHP Client version updated to v2.76.1.
 - 2024091300 - Moodle 4.5 support implemented.
 - 2024042900 - Moodle 4.4 support implemented.
 - 2024041100 - Moodle 4.3 support implemented.

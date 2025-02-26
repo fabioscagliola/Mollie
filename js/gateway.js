@@ -44,7 +44,7 @@ M.enrol_coursepayment_gateway = {
     init: function(Y, ajaxurl, sesskey, courseid) {
         M.enrol_coursepayment_gateway.log('Load: M.enrol_coursepayment_gateway v3.10');
 
-        // Set config
+        // Set config.
         this.config.courseid = courseid;
         this.config.ajaxurl = ajaxurl;
         this.config.sesskey = sesskey;
@@ -102,8 +102,8 @@ M.enrol_coursepayment_gateway = {
                             } else if (response.status == true) {
                                 Y.one('#error_coursepayment').setHTML('');
                                 Y.one('#discountcode').setStyle('border', '1px solid green');
-                                // Update
 
+                                // Update.
                                 if (response.amount > 0) {
                                     var newprice = parseFloat(costorignal) - response.amount;
                                     if (newprice < 0) {
@@ -121,7 +121,6 @@ M.enrol_coursepayment_gateway = {
                             }
                             M.enrol_coursepayment_gateway.log(response);
                         } catch (e) {
-                            // exception
                             M.enrol_coursepayment_gateway.log(e);
                         }
                     },

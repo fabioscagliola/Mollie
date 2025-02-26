@@ -6,6 +6,7 @@ class Capture extends BaseResource
 {
     /**
      * Always 'capture' for this object
+     *
      * @var string
      */
     public $resource;
@@ -22,6 +23,13 @@ class Capture extends BaseResource
      * @var string
      */
     public $mode;
+
+    /**
+     * Status of the capture.
+     *
+     * @var string
+     */
+    public $status;
 
     /**
      * Amount object containing the value and currency
@@ -57,6 +65,15 @@ class Capture extends BaseResource
      * @var string
      */
     public $settlementId;
+
+    /**
+     * Provide any data you like, for example a string or a JSON object. The data will be saved alongside the capture.
+     * Whenever you fetch the capture, the metadata will be included.
+     * You can use up to approximately 1kB on this field.
+     *
+     * @var \stdClass|mixed|null
+     */
+    public $metadata;
 
     /**
      * @var string
