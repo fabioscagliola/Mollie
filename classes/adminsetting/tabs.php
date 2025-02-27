@@ -75,7 +75,7 @@ class tabs extends \admin_setting {
      *
      * @return mixed The id of the currently selected tab.
      */
-    public function get_setting(): mixed {
+    public function get_setting() {
         return $this->selected;
     }
 
