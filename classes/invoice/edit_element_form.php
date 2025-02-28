@@ -52,9 +52,9 @@ require_once($CFG->dirroot . '/enrol/coursepayment/classes/invoice/colourpicker.
 class edit_element_form extends \moodleform {
 
     /**
-     * @var element The element object.
+     * @var $element The element object.
      */
-    protected mixed $element;
+    protected $element;
 
     /**
      * Form definition.
