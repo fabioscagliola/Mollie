@@ -240,8 +240,7 @@ class enrol_coursepayment_helper {
         // Check local_mollieconnect, are we linked to Avetica?
         // This is only needed for installation after 2020-01-16.
         if (!empty($mollieconnect) && empty($accepted)) {
-            // TODO debug.
-            set_config('mollie_connect_accepted', 1, 'enrol_coursepayment');
+            return true;
         }
 
         return false;

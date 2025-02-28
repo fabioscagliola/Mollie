@@ -43,9 +43,9 @@ class tabs extends \admin_setting {
     protected array $tabs = [0 => []];
 
     /**
-     * @var mixed $selected The currently selected tab.
+     * @var string|null|array $selected The currently selected tab.
      */
-    protected mixed $selected;
+    protected $selected;
 
     /**
      * @var string $section The section name.
@@ -73,7 +73,7 @@ class tabs extends \admin_setting {
     /**
      * Return the currently selected tab.
      *
-     * @return mixed The id of the currently selected tab.
+     * @return string|null|array The id of the currently selected tab.
      */
     public function get_setting() {
         return $this->selected;
