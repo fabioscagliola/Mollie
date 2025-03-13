@@ -26,7 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-global $ADMIN;
+//global $ADMIN;
 ($ADMIN->fulltree) || die();
 
 if (!during_initial_install()) {

@@ -26,7 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-global $ADMIN;
+//global $ADMIN;
 
 if ($ADMIN->fulltree) {
     $install = $PAGE->url->get_path() === '/admin/upgradesettings.php' ? true : false;

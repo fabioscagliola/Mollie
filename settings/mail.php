@@ -26,7 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-global $ADMIN;
+//global $ADMIN;
 ($ADMIN->fulltree) || die();
 
 $settings->add(new admin_setting_heading('enrol_coursepayment_welcomemail',
