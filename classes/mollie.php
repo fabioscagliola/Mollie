@@ -606,11 +606,11 @@ class enrol_coursepayment_mollie extends enrol_coursepayment_gateway {
      */
     private function form_inline($discountcode = '', $status = ''): string {
 
-        $string = '<div align="center">
-                            <p style="display: none;">' . get_string('gateway_mollie_select_method', 'enrol_coursepayment') . '</p>
-                    <form id="coursepayment_mollie_form" action="" class="coursepayment_mollie_form" method="post">
-                    <table id="coursepayment_mollie_gateways" cellpadding="5" style="display: none;">';
         $methods = $this->client->methods->allActive(["include" => "issuers"]);
+        $string = '<div align="center">
+                            <p' . (count($methods) === 1 ? ' style="display: none;"' : '') . '>' . get_string('gateway_mollie_select_method', 'enrol_coursepayment') . '</p>
+                    <form id="coursepayment_mollie_form" action="" class="coursepayment_mollie_form" method="post">
+                    <table id="coursepayment_mollie_gateways" cellpadding="5"' . (count($methods) === 1 ? ' style="display: none;"' : '') . '>';
         $i = 0;
         foreach ($methods as $method) {
 
