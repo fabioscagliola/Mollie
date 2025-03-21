@@ -621,6 +621,7 @@ abstract class enrol_coursepayment_gateway {
             $eventdata->smallmessage = '';
             $eventdata->attachment = $file;
             $eventdata->attachname = $a->invoice_number . '.pdf';
+            $eventdata->courseid = $course->id;
 
             message_send($eventdata);
         }
@@ -651,6 +652,7 @@ abstract class enrol_coursepayment_gateway {
                 $eventdata->smallmessage = '';
                 $eventdata->attachment = $file;
                 $eventdata->attachname = $a->invoice_number . '.pdf';
+                $eventdata->courseid = $course->id;
                 message_send($eventdata);
             }
         }
@@ -672,6 +674,7 @@ abstract class enrol_coursepayment_gateway {
                 $eventdata->smallmessage = '';
                 $eventdata->attachment = $file;
                 $eventdata->attachname = $a->invoice_number . '.pdf';
+                $eventdata->courseid = $course->id;
                 message_send($eventdata);
             }
         }
@@ -714,6 +717,7 @@ abstract class enrol_coursepayment_gateway {
                     $eventdata->smallmessage = '';
                     $eventdata->attachment = $file;
                     $eventdata->attachname = $a->invoice_number . '.pdf';
+                    $eventdata->courseid = $course->id;
                     message_send($eventdata);
                 }
             }
