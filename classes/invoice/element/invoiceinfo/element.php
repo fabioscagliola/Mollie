@@ -89,7 +89,7 @@ class element extends \enrol_coursepayment\invoice\element {
             return $this->dummy_data();
         }
 
-        $pluginconfig = get_config('enrol_coursepayment');
+        $pluginconfig = $data['pluginconfig'];
         $invoiceinfo = (object) [
             'companyname' => $pluginconfig->companyname,
             'address' => $pluginconfig->address,
@@ -138,11 +138,11 @@ class element extends \enrol_coursepayment\invoice\element {
     public function dummy_data(): \stdClass {
         $pluginconfig = get_config('enrol_coursepayment');
         $invoiceinfo = (object) [
-            'companyname' => $pluginconfig->companyname,
-            'address' => $pluginconfig->address,
-            'place' => $pluginconfig->place,
-            'zipcode' => $pluginconfig->zipcode,
-            'kvk' => $pluginconfig->kvk,
+            'companyname' => $pluginconfig->companyname ?? 'Company Name',
+            'address' => $pluginconfig->address ?? 'Address',
+            'place' => $pluginconfig->place ?? 'Place',
+            'zipcode' => $pluginconfig->zipcode ?? 'Zipcode',
+            'kvk' => $pluginconfig->kvk ?? '23456789',
             'currency' => $pluginconfig->currency ?? 'EUR',
             'date' => date('d-m-Y, H:i'),
         ];
