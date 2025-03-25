@@ -73,6 +73,6 @@ if ($return['status'] == true) {
 
     // Send a status message to user.
     echo $OUTPUT->notification($return['message']);
-    echo $OUTPUT->continue_button($CFG->wwwroot . '/my');
+    echo $OUTPUT->continue_button($CFG->wwwroot);
 }
 echo $OUTPUT->footer();
