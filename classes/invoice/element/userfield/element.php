@@ -51,18 +51,18 @@ class element extends \enrol_coursepayment\invoice\element {
 
         // Get the user profile fields.
         $userfields = [
-            'firstname' => \core_user\fields::get_display_name('firstname'),
-            'lastname' => \core_user\fields::get_display_name('lastname'),
-            'email' => \core_user\fields::get_display_name('email'),
-            'city' => \core_user\fields::get_display_name('city'),
-            'country' => \core_user\fields::get_display_name('country'),
-            'url' => \core_user\fields::get_display_name('url'),
-            'idnumber' => \core_user\fields::get_display_name('idnumber'),
-            'institution' => \core_user\fields::get_display_name('institution'),
-            'department' => \core_user\fields::get_display_name('department'),
-            'phone1' => \core_user\fields::get_display_name('phone1'),
-            'phone2' => \core_user\fields::get_display_name('phone2'),
-            'address' => \core_user\fields::get_display_name('address'),
+            'firstname' => get_string('firstname'),
+            'lastname' => get_string('lastname'),
+            'email' => get_string('email'),
+            'city' => get_string('city'),
+            'country' => get_string('country'),
+            'url' => get_string('url'),
+            'idnumber' => get_string('idnumber'),
+            'institution' => get_string('institution'),
+            'department' => get_string('department'),
+            'phone1' => get_string('phone1'),
+            'phone2' => get_string('phone2'),
+            'address' => get_string('address'),
         ];
         // Get the user custom fields.
         $arrcustomfields = \availability_profile\condition::get_custom_profile_fields();
